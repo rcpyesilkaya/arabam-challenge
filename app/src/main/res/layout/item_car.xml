@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-        <variable
-            name="car"
-            type="com.recepyesilkaya.arabam.data.model.CarResponse" />
-    </data>
-
-    <LinearLayout
+    <ImageView
+        android:id="@+id/ivCar"
+        android:layout_height="200dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:scaleType="fitXY"
+        tools:src="@mipmap/ic_launcher" />
 
-        <TextView
-            android:id="@+id/tvCarName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{car.modelName}"
-            android:textSize="16sp"
-            android:textStyle="italic" />
+    <TextView
+        android:id="@+id/tvCarTittle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:textColor="#333"
+        android:textSize="16sp"
+        tools:text="Sample news title" />
 
-    </LinearLayout>
-</layout>
+</LinearLayout>

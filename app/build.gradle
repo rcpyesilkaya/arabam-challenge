@@ -87,5 +87,11 @@ dependencies {
     //lifecycle
     implementation "android.arch.lifecycle:extensions:$lifecycle_ext_version"
 
+    //paging
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    implementation "androidx.paging:paging-rxjava2-ktx:$paging_version"
+
+    //Image
+    implementation "com.squareup.picasso:picasso:$picasso"
 
 }

@@ -8,21 +8,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitClient {
     companion object {
-        @Volatile
-        private var INSTANCERx: Retrofit? = null
-
-        fun getRetrofit(): Retrofit {
+        fun getService(): APIService {
             synchronized(this) {
-                INSTANCERx?.let {
-                    return it
-                }
-                INSTANCERx =
+                val retrofit =
                     Retrofit.Builder()
                         .baseUrl(BuildConfig.BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())
                         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                         .build()
-                return INSTANCERx as Retrofit
+                return retrofit.create(APIService::class.java)
             }
         }
     }

@@ -1,22 +1,53 @@
 package com.recepyesilkaya.arabam.view.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.recepyesilkaya.arabam.data.model.CarResponse
-import com.recepyesilkaya.arabam.data.network.APIService
 import com.recepyesilkaya.arabam.data.network.RetrofitClient
-import com.recepyesilkaya.arabam.data.repository.CarRepository
-import com.recepyesilkaya.arabam.util.Resource
-import com.recepyesilkaya.arabam.util.Status
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.recepyesilkaya.arabam.data.paging.CarDataSource
+import com.recepyesilkaya.arabam.data.paging.CarDataSourceFactory
+import com.recepyesilkaya.arabam.util.State
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
 
 class HomeViewModel : ViewModel() {
 
+    private val apiService = RetrofitClient.getService()
+    var cars: LiveData<PagedList<CarResponse>>
+    private val compositeDisposable = CompositeDisposable()
+    private val pageSize = 10
+    private val carDataSourceFactory: CarDataSourceFactory
+
+    init {
+        carDataSourceFactory = CarDataSourceFactory(compositeDisposable, apiService)
+        val config = PagedList.Config.Builder()
+            .setPageSize(pageSize)
+            .setInitialLoadSizeHint(pageSize * 2)
+            .setEnablePlaceholders(false)
+            .build()
+        cars = LivePagedListBuilder(carDataSourceFactory, config).build()
+    }
+
+    fun getState(): LiveData<State> =
+        Transformations.switchMap(carDataSourceFactory.carsDataSourceLiveData, CarDataSource::state)
+
+    fun retry() {
+        carDataSourceFactory.carsDataSourceLiveData.value?.retry()
+    }
+
+    fun listIsEmpty(): Boolean {
+        return cars.value?.isEmpty() ?: true
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.dispose()
+    }
+
+
+    /*
     private val compositeDisposable = CompositeDisposable()
     private val apiService = RetrofitClient.getRetrofit().create(APIService::class.java)
     private val carRepository = CarRepository(apiService)
@@ -42,7 +73,7 @@ class HomeViewModel : ViewModel() {
         get() = _error
 
     fun getCarData(sort: Int, sortDirection: Int, take: Int) {
-        resourceStatusData(Resource(Status.LOADING, data = null, message = ""))
+        resourceStateData(Resource(State.LOADING, data = null, message = ""))
 
         //val getControlData = carRepository.getControlData()
 
@@ -54,37 +85,37 @@ class HomeViewModel : ViewModel() {
                 .subscribeWith(object : DisposableSingleObserver<List<CarResponse>>() {
                     override fun onSuccess(t: List<CarResponse>) {
                         // carRepository.insertData(t)
-                        resourceStatusData(Resource(Status.SUCCESS, data = t, message = ""))
+                        resourceStateData(Resource(State.SUCCESS, data = t, message = ""))
                     }
 
                     override fun onError(e: Throwable) {
-                        resourceStatusData(Resource(Status.ERROR, data = null, message = ""))
+                        resourceStateData(Resource(State.ERROR, data = null, message = ""))
                     }
                 })
         )
         /*} else {
-            _carList.postValue(Resource(Status.SUCCESS, data = getControlData, message = ""))
+            _carList.postValue(Resource(State.SUCCESS, data = getControlData, message = ""))
             Log.e("dataTipi","Yerel ")
         }*/
     }
 
 
-    private fun resourceStatusData(resource: Resource<List<CarResponse>>) {
-        when (resource.status) {
-            Status.LOADING -> {
+    private fun resourceStateData(resource: Resource<List<CarResponse>>) {
+        when (resource.state) {
+            State.LOADING -> {
                 Log.e("Data", "Loading")
                 _loadingValue.value = true
                 _successValue.value = false
                 _errorValue.value = false
             }
-            Status.SUCCESS -> {
+            State.SUCCESS -> {
                 Log.e("Data", "Success")
                 resource.data?.let { _carList.value = it }
                 _loadingValue.value = false
                 _successValue.value = true
                 _errorValue.value = false
             }
-            Status.ERROR -> {
+            State.ERROR -> {
                 resource.message
                 Log.e("Data", "Error")
                 _error.value = "Veriler Yüklenirken Hata Oluştu! ${resource.message} "
@@ -98,5 +129,5 @@ class HomeViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()
-    }
+    }*/
 }
