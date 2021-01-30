@@ -1,6 +1,5 @@
 package com.recepyesilkaya.arabam.data.model
 
-
 data class CarResponse(
     val id: Long?,
     val title: String?,

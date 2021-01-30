@@ -1,6 +1,5 @@
 package com.recepyesilkaya.arabam.view.adapter
 
-import android.util.Log
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -16,6 +15,13 @@ class CarListAdapter(private val retry: () -> Unit) :
 
     private var state = State.LOADING
 
+    private lateinit var carItemClick: (Long) -> Unit
+
+    fun onClickItem(carItemClick: (Long) -> Unit) {
+        this.carItemClick = carItemClick
+    }
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == DATA_VIEW_TYPE) CarViewHolder.create(parent) else ListFooterViewHolder.create(
             retry,
@@ -25,8 +31,7 @@ class CarListAdapter(private val retry: () -> Unit) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == DATA_VIEW_TYPE) {
-            (holder as CarViewHolder).bind(getItem(position))
-            Log.e("JRDev", getItem(position)?.title.toString())
+            (holder as CarViewHolder).bind(getItem(position), carItemClick)
         } else (holder as ListFooterViewHolder).bind(state)
     }
 
@@ -59,38 +64,3 @@ class CarListAdapter(private val retry: () -> Unit) :
         notifyItemChanged(super.getItemCount())
     }
 }
-
-
-/*
-class CarAdapter(private val context: Context) : RecyclerView.Adapter<CarAdapter.CarViewHolder>() {
-
-    private var carList = ArrayList<CarResponse>()
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarViewHolder {
-        val binding: ItemCarBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.item_car,
-            parent,
-            false
-        )
-        return CarViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: CarViewHolder, position: Int) {
-        holder.bind(carList[position])
-    }
-
-    override fun getItemCount(): Int = carList.size
-
-    fun updateCarList(carList: List<CarResponse>) {
-        this.carList.clear()
-        this.carList.addAll(carList)
-        notifyDataSetChanged()
-    }
-
-    class CarViewHolder(val binding: ItemCarBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(car: CarResponse) {
-            binding.car = car
-        }
-    }
-}*/

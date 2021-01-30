@@ -7,14 +7,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.recepyesilkaya.arabam.R
 import com.recepyesilkaya.arabam.data.model.CarResponse
 import com.recepyesilkaya.arabam.databinding.ItemCarBinding
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_car.view.*
 
 class CarViewHolder(val binding: ItemCarBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(car: CarResponse?) {
-        if (car != null) {
-            binding.car = car
-            Picasso.get().load(car.photo).into(itemView.ivCar)
+    fun bind(car: CarResponse?, carItemClick: (Long) -> Unit) {
+        car?.let { carItem ->
+            binding.car = carItem
+            binding.root.setOnClickListener {
+                carItem.id?.let { it1 -> carItemClick.invoke(it1) }
+            }
+
         }
     }
 

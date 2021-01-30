@@ -9,10 +9,27 @@
         android:id="@+id/homeFragment"
         android:name="com.recepyesilkaya.arabam.view.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.recepyesilkaya.arabam.view.detail.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/descriptionFragment"
+        android:name="com.recepyesilkaya.arabam.view.detail.description.DescriptionFragment"
+        android:label="fragment_description"
+        tools:layout="@layout/fragment_description" />
+    <fragment
+        android:id="@+id/advertInfoFragment"
+        android:name="com.recepyesilkaya.arabam.view.detail.advertinfo.AdvertInfoFragment"
+        android:label="AdvertInfoFragment" />
 </navigation>

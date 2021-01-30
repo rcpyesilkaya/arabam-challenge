@@ -15,6 +15,6 @@ interface APIService {
     ): Single<List<CarResponse>>
 
     @GET("/api/v1/detail")
-    fun getDetail(@Query("id") id: Long): Single<CarDetail>
+    fun getDetail(@Query("id") id: Long): Single<CarDetail?>
 
 }
