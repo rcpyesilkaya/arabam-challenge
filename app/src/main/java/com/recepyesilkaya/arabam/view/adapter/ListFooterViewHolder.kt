@@ -29,6 +29,7 @@ class ListFooterViewHolder(val binding: ItemListFooterBinding) :
                 parent,
                 false
             )
+            binding.tvError.setOnClickListener { retry() }
             return ListFooterViewHolder(binding)
         }
     }

@@ -9,8 +9,7 @@ import retrofit2.http.Query
 interface APIService {
     @GET("/api/v1/listing")
     fun getData(
-        @Query("sort") sort: Int,
-        @Query("sortDirection") sortDirection: Int,
+        @Query("skip") skip: Int,
         @Query("take") take: Int
     ): Single<List<CarResponse>>
 

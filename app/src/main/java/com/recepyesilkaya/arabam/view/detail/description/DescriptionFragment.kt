@@ -22,7 +22,6 @@ class DescriptionFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         binding.description = Mock.description
     }
 }

@@ -21,7 +21,6 @@ class CarListAdapter(private val retry: () -> Unit) :
         this.carItemClick = carItemClick
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == DATA_VIEW_TYPE) CarViewHolder.create(parent) else ListFooterViewHolder.create(
             retry,
@@ -42,7 +41,7 @@ class CarListAdapter(private val retry: () -> Unit) :
     companion object {
         val CarDiffCallback = object : DiffUtil.ItemCallback<CarResponse>() {
             override fun areItemsTheSame(oldItem: CarResponse, newItem: CarResponse): Boolean {
-                return oldItem.title == newItem.title
+                return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(oldItem: CarResponse, newItem: CarResponse): Boolean {

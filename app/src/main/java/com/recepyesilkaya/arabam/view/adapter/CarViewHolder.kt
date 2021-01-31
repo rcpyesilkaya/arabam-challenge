@@ -13,9 +13,8 @@ class CarViewHolder(val binding: ItemCarBinding) : RecyclerView.ViewHolder(bindi
         car?.let { carItem ->
             binding.car = carItem
             binding.root.setOnClickListener {
-                carItem.id?.let { it1 -> carItemClick.invoke(it1) }
+                carItem.id.let { it1 -> carItemClick.invoke(it1) }
             }
-
         }
     }
 
@@ -29,6 +28,5 @@ class CarViewHolder(val binding: ItemCarBinding) : RecyclerView.ViewHolder(bindi
             )
             return CarViewHolder(binding)
         }
-
     }
 }

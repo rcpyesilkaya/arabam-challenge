@@ -1,7 +1,7 @@
 package com.recepyesilkaya.arabam.data.model
 
 data class CarResponse(
-    val id: Long?,
+    val id: Long,
     val title: String?,
     val location: CarLocation?,
     val category: Category?,

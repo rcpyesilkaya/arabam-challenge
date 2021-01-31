@@ -27,6 +27,5 @@ class AdvertInfoFragment : Fragment() {
 
         val adapter = AdvertInfoAdapter(Mock.carAdverts)
         binding.rvAdvertInfo.adapter = adapter
-
     }
 }

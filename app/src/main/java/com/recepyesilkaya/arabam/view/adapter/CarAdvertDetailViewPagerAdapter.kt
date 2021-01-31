@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.recepyesilkaya.arabam.data.model.FragmentModel
 
-class CarAdvertInfoViewPager(
+class CarAdvertDetailViewPagerAdapter(
     private val fragmentList: List<FragmentModel>,
     fragmentManager: FragmentManager
 ) : FragmentStatePagerAdapter(

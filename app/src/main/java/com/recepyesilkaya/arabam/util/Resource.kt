@@ -12,9 +12,9 @@ data class Resource<out T>(val state: State, val data: T?, val message: String?)
             Resource(state = State.SUCCESS, data = data, message = null)
 
         fun <T> error(data: T?, message: String): Resource<T> =
-            Resource(state = State.ERROR, data, message = message)
+            Resource(state = State.ERROR, data = data, message = message)
 
         fun <T> loading(data: T?): Resource<T> =
-            Resource(state = State.LOADING, data, message = null)
+            Resource(state = State.LOADING, data = data, message = null)
     }
 }

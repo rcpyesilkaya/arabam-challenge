@@ -2,6 +2,7 @@ package com.recepyesilkaya.arabam.data.paging
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
+import com.recepyesilkaya.arabam.data.mock.Mock
 import com.recepyesilkaya.arabam.data.model.CarResponse
 import com.recepyesilkaya.arabam.data.network.APIService
 import com.recepyesilkaya.arabam.util.State
@@ -26,14 +27,14 @@ class CarDataSource(
     ) {
         updateState(State.LOADING)
         compositeDisposable.add(
-            apiService.getData(1, 0, params.requestedLoadSize)
+            apiService.getData(0, params.requestedLoadSize)
                 .subscribe(
                     { response ->
                         updateState(State.SUCCESS)
                         callback.onResult(
                             response,
                             null,
-                            2
+                            10
                         )
                     },
                     {
@@ -43,20 +44,20 @@ class CarDataSource(
                 )
         )
     }
-
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, CarResponse>) {
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, CarResponse>) {
         updateState(State.LOADING)
+        Mock.skip += 10
         compositeDisposable.add(
-            apiService.getData(params.key, 0, params.requestedLoadSize)
+            apiService.getData(Mock.skip, params.requestedLoadSize)
                 .subscribe(
                     { response ->
                         updateState(State.SUCCESS)
                         callback.onResult(
                             response,
-                            params.key + 1
+                            Mock.skip + 10
                         )
                     },
                     {

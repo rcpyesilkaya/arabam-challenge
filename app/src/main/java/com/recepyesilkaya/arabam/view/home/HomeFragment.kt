@@ -1,7 +1,6 @@
 package com.recepyesilkaya.arabam.view.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var carListAdapter: CarListAdapter
     private lateinit var binding: FragmentHomeBinding
+
     private val homeViewModel: HomeViewModel by lazy {
         ViewModelProvider(this).get(HomeViewModel::class.java)
     }
@@ -27,27 +27,19 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false).apply {
-            this.viewModel = homeViewModel
-            this.lifecycleOwner = this@HomeFragment
-        }
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = homeViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
         initAdapter()
         initState()
         initOnClickAdapterItem()
-    }
-
-    private fun initOnClickAdapterItem() {
-        carListAdapter.onClickItem {
-            Log.e("JRDev Click", it.toString())
-            val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(it)
-            findNavController().navigate(action)
-        }
+        initObserve()
     }
 
     private fun initAdapter() {
@@ -55,6 +47,7 @@ class HomeFragment : Fragment() {
         rvCar.adapter = carListAdapter
         homeViewModel.cars.observe(viewLifecycleOwner, Observer {
             carListAdapter.submitList(it)
+            homeViewModel.carsAddDatabase(it)
         })
     }
 
@@ -66,5 +59,21 @@ class HomeFragment : Fragment() {
                 carListAdapter.setState(state ?: State.SUCCESS)
             }
         })
+    }
+
+    private fun initOnClickAdapterItem() {
+        carListAdapter.onClickItem {
+            val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(it)
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun initObserve() {
+        /* homeViewModel.localCars.observe(viewLifecycleOwner, Observer { cars ->
+             cars.forEach {
+                 Log.e("JRDev",it.title.toString())
+             }
+         })*/
+
     }
 }

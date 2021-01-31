@@ -21,7 +21,5 @@ data class AdvertInfoViewState(private val advertInfo: CarAdvertInfo) {
 
         return ContextCompat.getColor(context, R.color.white)
     }
-
-
 }
 

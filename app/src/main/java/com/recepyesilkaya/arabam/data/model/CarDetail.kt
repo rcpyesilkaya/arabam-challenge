@@ -13,5 +13,5 @@ data class CarDetail(
     val photos: List<String>?,
     val properties: List<Property>?,
     val text: String?,
-    val userInfo: User?,
+    val userInfo: User?
 )
