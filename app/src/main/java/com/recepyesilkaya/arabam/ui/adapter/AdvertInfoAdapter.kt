@@ -1,4 +1,4 @@
-package com.recepyesilkaya.arabam.view.adapter
+package com.recepyesilkaya.arabam.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.recepyesilkaya.arabam.R
 import com.recepyesilkaya.arabam.data.model.CarAdvertInfo
 import com.recepyesilkaya.arabam.databinding.ItemAdvertInfoBinding
-import com.recepyesilkaya.arabam.view.detail.advertinfo.AdvertInfoViewState
+import com.recepyesilkaya.arabam.ui.detail.advertinfo.AdvertInfoViewState
 
 class AdvertInfoAdapter(private var carAdvertInfo: ArrayList<CarAdvertInfo>) :
     RecyclerView.Adapter<AdvertInfoAdapter.AdvertInfoViewHolder>() {

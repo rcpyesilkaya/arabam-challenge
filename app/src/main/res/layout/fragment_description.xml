@@ -11,11 +11,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.detail.description.DescriptionFragment">
+        tools:context=".ui.detail.description.DescriptionFragment">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:id="@+id/tvDescription"
                 android:layout_width="match_parent"

@@ -9,11 +9,11 @@ import com.recepyesilkaya.arabam.data.local.entity.CarEntity
 import io.reactivex.Completable
 
 @Dao
-interface CarEntityDAO {
+interface CarDAO {
     @Query("SELECT * FROM entity_car")
     fun getAllCars(): LiveData<List<CarEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(carEntity: CarEntity): Completable
 
     @Query("DELETE FROM entity_car")

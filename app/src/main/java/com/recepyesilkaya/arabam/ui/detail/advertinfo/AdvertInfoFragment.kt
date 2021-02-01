@@ -1,4 +1,4 @@
-package com.recepyesilkaya.arabam.view.detail.advertinfo
+package com.recepyesilkaya.arabam.ui.detail.advertinfo
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.recepyesilkaya.arabam.data.mock.Mock
 import com.recepyesilkaya.arabam.databinding.FragmentAdvertInfoBinding
-import com.recepyesilkaya.arabam.view.adapter.AdvertInfoAdapter
+import com.recepyesilkaya.arabam.ui.adapter.AdvertInfoAdapter
 
 
 class AdvertInfoFragment : Fragment() {

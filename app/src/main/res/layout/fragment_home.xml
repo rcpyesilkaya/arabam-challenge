@@ -9,14 +9,14 @@
 
         <variable
             name="viewModel"
-            type="com.recepyesilkaya.arabam.view.home.HomeViewModel" />
+            type="com.recepyesilkaya.arabam.ui.home.HomeViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.home.HomeFragment">
+        tools:context=".ui.home.HomeFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCar"

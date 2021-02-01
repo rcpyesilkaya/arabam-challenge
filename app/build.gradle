@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-android-extensions'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -68,38 +69,41 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$junit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
 
-    //Navigation
+    //NAVIGATION
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
-    //retrofit
+    //RETROFIT
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
 
-    //rxjava
+    //RXJAVA
     implementation "io.reactivex.rxjava2:rxjava:$rx_java_version"
     implementation "io.reactivex.rxjava2:rxandroid:$rx_java_version"
 
-    //glide
-    implementation "com.github.bumptech.glide:glide:$glide_ersion"
 
-    //lifecycle
+    //LIFECYCLE
     implementation "android.arch.lifecycle:extensions:$lifecycle_ext_version"
 
-    //paging
+    //PAGING
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
     implementation "androidx.paging:paging-rxjava2-ktx:$paging_version"
 
-    //glide
+    //GLIDE
     implementation "com.github.bumptech.glide:glide:$glide_ersion"
 
-    //ImageSlider
+    //IMAGESLIDER
     implementation "com.github.denzcoskun:ImageSlideshow:$image_slide_show"
 
-    //Room
+    //ROOM
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
+
+    //HILT
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_lifecycle_viewmodel"
 
 }

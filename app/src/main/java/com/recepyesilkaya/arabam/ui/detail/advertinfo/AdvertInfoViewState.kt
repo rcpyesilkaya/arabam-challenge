@@ -1,4 +1,4 @@
-package com.recepyesilkaya.arabam.view.detail.advertinfo
+package com.recepyesilkaya.arabam.ui.detail.advertinfo
 
 import android.content.Context
 import androidx.core.content.ContextCompat

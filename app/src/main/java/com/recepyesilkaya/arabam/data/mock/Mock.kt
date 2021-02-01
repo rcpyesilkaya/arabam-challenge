@@ -5,8 +5,8 @@ import com.recepyesilkaya.arabam.R
 import com.recepyesilkaya.arabam.data.model.CarAdvertInfo
 import com.recepyesilkaya.arabam.data.model.CarDetail
 import com.recepyesilkaya.arabam.data.model.FragmentModel
-import com.recepyesilkaya.arabam.view.detail.advertinfo.AdvertInfoFragment
-import com.recepyesilkaya.arabam.view.detail.description.DescriptionFragment
+import com.recepyesilkaya.arabam.ui.detail.advertinfo.AdvertInfoFragment
+import com.recepyesilkaya.arabam.ui.detail.description.DescriptionFragment
 
 object Mock {
     var carAdverts = ArrayList<CarAdvertInfo>()
@@ -80,5 +80,5 @@ object Mock {
         carAdverts = carAdvertInfo
     }
 
-    var skip: Int = 0
+    var skip: Int = 10
 }

@@ -1,4 +1,4 @@
-package com.recepyesilkaya.arabam.view.adapter
+package com.recepyesilkaya.arabam.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

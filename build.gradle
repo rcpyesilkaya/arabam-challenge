@@ -18,6 +18,8 @@ buildscript {
         glide_version = '4.9.0'
         image_slide_show = '0.0.2'
         room_version = '2.2.6'
+        hilt_version = "2.31.2-alpha"
+        hilt_lifecycle_viewmodel="1.0.0-alpha03"
     }
     repositories {
         google()
@@ -26,8 +28,8 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        def nav_version = "2.3.3"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
     }
 }
 

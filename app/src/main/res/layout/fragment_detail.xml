@@ -11,14 +11,14 @@
 
         <variable
             name="viewModel"
-            type="com.recepyesilkaya.arabam.view.detail.DetailViewModel" />
+            type="com.recepyesilkaya.arabam.ui.detail.DetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".view.detail.DetailFragment">
+        tools:context=".ui.detail.DetailFragment">
 
         <ProgressBar
             android:id="@+id/progressBar"

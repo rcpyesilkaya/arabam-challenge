@@ -1,28 +1,26 @@
-package com.recepyesilkaya.arabam.view.detail
+package com.recepyesilkaya.arabam.ui.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.recepyesilkaya.arabam.R
 import com.recepyesilkaya.arabam.data.mock.Mock
 import com.recepyesilkaya.arabam.data.model.CarDetail
 import com.recepyesilkaya.arabam.databinding.FragmentDetailBinding
+import com.recepyesilkaya.arabam.ui.adapter.CarAdvertDetailViewPagerAdapter
 import com.recepyesilkaya.arabam.util.State
-import com.recepyesilkaya.arabam.view.adapter.CarAdvertDetailViewPagerAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class DetailFragment : Fragment() {
 
     private var carId: Long? = null
-
     private lateinit var binding: FragmentDetailBinding
-    private val detailViewModel: DetailViewModel by lazy {
-        ViewModelProvider(this).get(DetailViewModel::class.java)
-    }
+    private val detailViewModel: DetailViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -5,17 +5,18 @@ import androidx.paging.DataSource
 import com.recepyesilkaya.arabam.data.model.CarResponse
 import com.recepyesilkaya.arabam.data.network.APIService
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
-class CarDataSourceFactory(
+class CarDataSourceFactory @Inject constructor(
     private val compositeDisposable: CompositeDisposable,
-    private val apiService: APIService
+    private val apiService: APIService,
+    private val carDataSource: CarDataSource
 ) : DataSource.Factory<Int, CarResponse>() {
 
     val carsDataSourceLiveData = MutableLiveData<CarDataSource>()
 
     override fun create(): DataSource<Int, CarResponse> {
-        val carsDataSource = CarDataSource(apiService, compositeDisposable)
-        carsDataSourceLiveData.postValue(carsDataSource)
-        return carsDataSource
+        carsDataSourceLiveData.postValue(carDataSource)
+        return carDataSource
     }
 }

@@ -1,4 +1,4 @@
-package com.recepyesilkaya.arabam.view.detail.description
+package com.recepyesilkaya.arabam.ui.detail.description
 
 import android.os.Bundle
 import android.view.LayoutInflater

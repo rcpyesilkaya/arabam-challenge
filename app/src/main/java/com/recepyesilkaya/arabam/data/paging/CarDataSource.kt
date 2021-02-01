@@ -11,9 +11,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Action
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 
-class CarDataSource(
+class CarDataSource @Inject constructor(
     private val apiService: APIService,
     private val compositeDisposable: CompositeDisposable
 ) : PageKeyedDataSource<Int, CarResponse>() {

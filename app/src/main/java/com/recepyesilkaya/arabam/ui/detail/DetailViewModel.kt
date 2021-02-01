@@ -1,42 +1,31 @@
-package com.recepyesilkaya.arabam.view.detail
+package com.recepyesilkaya.arabam.ui.detail
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.denzcoskun.imageslider.models.SlideModel
-import com.recepyesilkaya.arabam.data.local.dao.CarEntityDAO
-import com.recepyesilkaya.arabam.data.local.database.CarRoomDatabase
 import com.recepyesilkaya.arabam.data.model.CarDetail
-import com.recepyesilkaya.arabam.data.network.RetrofitClient
 import com.recepyesilkaya.arabam.data.repository.CarRepository
 import com.recepyesilkaya.arabam.util.Resource
 import com.recepyesilkaya.arabam.util.State
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class DetailViewModel(application: Application) : AndroidViewModel(application) {
-
-
-    private val compositeDisposable = CompositeDisposable()
-    private val apiService = RetrofitClient.getService()
-
-    private val carRepository: CarRepository
-    val carEntityDAO: CarEntityDAO = CarRoomDatabase.getDatabase(application).carEntityDAO()
-
-    init {
-        carRepository = CarRepository(apiService, carEntityDAO)
-    }
+@HiltViewModel
+class DetailViewModel @Inject constructor(private val carRepository: CarRepository) : ViewModel() {
 
     lateinit var imageSize: String
     private var imageList = ArrayList<SlideModel>()
 
+    private val compositeDisposable = CompositeDisposable()
+    var carDetailResource = MutableLiveData<Resource<CarDetail>>()
+
     private val _images = MutableLiveData<ArrayList<SlideModel>>()
     val images: LiveData<ArrayList<SlideModel>>
         get() = _images
-
-    var carDetailResource = MutableLiveData<Resource<CarDetail>>()
 
     fun getCarDetail(id: Long) {
         carDetailResource.postValue(Resource(state = State.LOADING, data = null, message = ""))

@@ -1,59 +1,44 @@
-package com.recepyesilkaya.arabam.view.home
+package com.recepyesilkaya.arabam.ui.home
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.recepyesilkaya.arabam.data.local.dao.CarEntityDAO
-import com.recepyesilkaya.arabam.data.local.database.CarRoomDatabase
 import com.recepyesilkaya.arabam.data.model.CarResponse
-import com.recepyesilkaya.arabam.data.network.APIService
-import com.recepyesilkaya.arabam.data.network.RetrofitClient
 import com.recepyesilkaya.arabam.data.paging.CarDataSource
 import com.recepyesilkaya.arabam.data.paging.CarDataSourceFactory
 import com.recepyesilkaya.arabam.data.repository.CarRepository
 import com.recepyesilkaya.arabam.util.State
 import com.recepyesilkaya.arabam.util.toEntity
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class HomeViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val carRepository: CarRepository
-    // val localCars: LiveData<List<CarEntity>>
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val carRepository: CarRepository,
+    private val carDataSourceFactory: CarDataSourceFactory,
+    private val compositeDisposable: CompositeDisposable
+) : ViewModel() {
 
     val errorValue = MutableLiveData<Boolean>()
     val loadingValue = MutableLiveData<Boolean>()
 
-    //-------------------------------------------------------
-
-    private var apiService: APIService = RetrofitClient.getService()
     var cars: LiveData<PagedList<CarResponse>>
-    private val compositeDisposable = CompositeDisposable()
     private val pageSize = 10
-    private val carDataSourceFactory: CarDataSourceFactory
 
     init {
-        carDataSourceFactory = CarDataSourceFactory(compositeDisposable, apiService)
         val config = PagedList.Config.Builder()
             .setPageSize(pageSize)
             .setInitialLoadSizeHint(pageSize * 2)
             .setEnablePlaceholders(false)
             .build()
         cars = LivePagedListBuilder(carDataSourceFactory, config).build()
-
-        //------------------------------------------------------------------------------------------
-
-        val carEntityDAO: CarEntityDAO = CarRoomDatabase.getDatabase(application).carEntityDAO()
-
-        carRepository =
-            CarRepository(apiService, carEntityDAO)
-        // localCars = carRepository.getAllCars()
 
     }
 
