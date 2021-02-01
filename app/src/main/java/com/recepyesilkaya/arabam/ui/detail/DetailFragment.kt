@@ -37,6 +37,7 @@ class DetailFragment : Fragment() {
         initDetail()
         bindImageSize()
         initObserve()
+        bindOnClickBack()
     }
 
     private fun initDetail() {
@@ -69,6 +70,12 @@ class DetailFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun bindOnClickBack() {
+        detailViewModel.onClickBack {
+            activity?.onBackPressed()
+        }
     }
 
     private fun bindViewPager() {

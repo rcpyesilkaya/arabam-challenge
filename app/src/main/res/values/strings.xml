@@ -22,5 +22,6 @@
     <string name="advert_property_gear_name">gear</string>
     <string name="advert_property_km_name">km</string>
     <string name="advert_property_color_name">color</string>
+    <string name="fragment_advert_detail_title">İlan Detayı</string>
 
 </resources>

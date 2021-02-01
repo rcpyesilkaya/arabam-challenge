@@ -7,7 +7,7 @@
 
         <variable
             name="car"
-            type="com.recepyesilkaya.arabam.data.model.CarResponse" />
+            type="com.recepyesilkaya.arabam.ui.home.HomeViewState" />
 
     </data>
 
@@ -32,7 +32,7 @@
             android:id="@+id/layoutPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/color_red"
+            android:background="@color/red_500"
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/ivAdvert"
             app:layout_constraintStart_toStartOf="parent">
@@ -44,7 +44,7 @@
                 android:gravity="center"
                 android:text="@{car.priceFormatted}"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_16sp"
                 android:textStyle="bold" />
         </FrameLayout>
 
@@ -52,11 +52,11 @@
             android:id="@+id/tvCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@{car.category.name}"
+            android:text="@{car.categoryName}"
             android:textColor="@color/text_light_black"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_size_12sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutPrice" />
@@ -65,11 +65,12 @@
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:text="@{car.title}"
             android:textColor="@color/text_light_black"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_size_12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCategory" />
 
@@ -77,11 +78,11 @@
             android:id="@+id/tvLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@{@string/location(car.location.cityName,car.location.townName)}"
+            android:text="@{car.location}"
             android:textColor="@color/grey_light"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_size_12sp"
             app:drawableStartCompat="@drawable/ic_location"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
@@ -91,10 +92,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="6dp"
+            android:layout_marginEnd="16dp"
             android:text="@{car.dateFormatted}"
             android:textColor="@color/grey_light"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_size_12sp"
             app:drawableStartCompat="@drawable/ic_calendar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
@@ -113,11 +114,12 @@
             android:id="@+id/tvFeatures"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:text="@string/error"
+            android:layout_marginEnd="16dp"
+            android:text="@{car.properties}"
             android:textColor="@color/text_light_black"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_size_12sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider1" />

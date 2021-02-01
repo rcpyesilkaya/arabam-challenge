@@ -67,12 +67,13 @@ class HomeFragment : Fragment() {
         }
     }
 
+
     private fun initObserve() {
         /* homeViewModel.localCars.observe(viewLifecycleOwner, Observer { cars ->
              cars.forEach {
                  Log.e("JRDev",it.title.toString())
              }
          })*/
-
     }
+
 }

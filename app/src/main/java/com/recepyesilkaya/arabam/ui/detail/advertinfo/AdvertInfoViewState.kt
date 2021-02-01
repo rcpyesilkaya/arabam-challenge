@@ -9,7 +9,7 @@ data class AdvertInfoViewState(private val advertInfo: CarAdvertInfo) {
 
     fun setTextColor(context: Context): Int {
         if (advertInfo.key == context.getString(R.string.advert_price_title)) {
-            return ContextCompat.getColor(context, R.color.color_red)
+            return ContextCompat.getColor(context, R.color.red)
         } else if (advertInfo.key == context.getString(R.string.advert_no_title)) {
             return ContextCompat.getColor(context, R.color.blue_action)
         }

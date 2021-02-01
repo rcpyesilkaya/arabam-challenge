@@ -19,6 +19,7 @@ class DetailViewModel @Inject constructor(private val carRepository: CarReposito
 
     lateinit var imageSize: String
     private var imageList = ArrayList<SlideModel>()
+    lateinit var onBackClick: () -> Unit
 
     private val compositeDisposable = CompositeDisposable()
     var carDetailResource = MutableLiveData<Resource<CarDetail>>()
@@ -69,6 +70,10 @@ class DetailViewModel @Inject constructor(private val carRepository: CarReposito
             }
         }
         _images.value = imageList
+    }
+
+    fun onClickBack(onBackClick: () -> Unit) {
+        this.onBackClick = onBackClick
     }
 
     override fun onCleared() {
