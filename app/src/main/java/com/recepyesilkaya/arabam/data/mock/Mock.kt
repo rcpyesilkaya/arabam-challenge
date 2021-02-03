@@ -1,7 +1,9 @@
 package com.recepyesilkaya.arabam.data.mock
 
 import android.content.Context
+import androidx.fragment.app.FragmentManager
 import com.recepyesilkaya.arabam.R
+import com.recepyesilkaya.arabam.data.local.entity.SelectedCarEntity
 import com.recepyesilkaya.arabam.data.model.CarAdvertInfo
 import com.recepyesilkaya.arabam.data.model.CarDetail
 import com.recepyesilkaya.arabam.data.model.FragmentModel
@@ -9,8 +11,11 @@ import com.recepyesilkaya.arabam.ui.detail.advertinfo.AdvertInfoFragment
 import com.recepyesilkaya.arabam.ui.detail.description.DescriptionFragment
 
 object Mock {
+    var selectedCars: ArrayList<SelectedCarEntity>? = null
     var carAdverts = ArrayList<CarAdvertInfo>()
     var description = ""
+    var idBackForSelectedCar = 0
+    var childFragmentManager: FragmentManager? = null
 
     fun getListFragment(): List<FragmentModel> {
         val fragments = ArrayList<FragmentModel>()

@@ -1,9 +1,11 @@
 package com.recepyesilkaya.arabam.ui.detail
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.denzcoskun.imageslider.models.SlideModel
+import com.recepyesilkaya.arabam.data.local.entity.SelectedCarEntity
 import com.recepyesilkaya.arabam.data.model.CarDetail
 import com.recepyesilkaya.arabam.data.repository.CarRepository
 import com.recepyesilkaya.arabam.util.Resource
@@ -28,6 +30,12 @@ class DetailViewModel @Inject constructor(private val carRepository: CarReposito
     val images: LiveData<ArrayList<SlideModel>>
         get() = _images
 
+    private val _message = MutableLiveData<String>()
+    val message: LiveData<String>
+        get() = _message
+
+    var carDetail: CarDetail? = null
+
     fun getCarDetail(id: Long) {
         carDetailResource.postValue(Resource(state = State.LOADING, data = null, message = ""))
 
@@ -45,7 +53,7 @@ class DetailViewModel @Inject constructor(private val carRepository: CarReposito
                                     message = null
                                 )
                             )
-
+                            carDetail = it
                         }
                     },
                     { error ->
@@ -61,6 +69,18 @@ class DetailViewModel @Inject constructor(private val carRepository: CarReposito
         )
     }
 
+    fun addSelectedCar(id: Int) {
+        val selectedCarEntity = SelectedCarEntity(id)
+
+        compositeDisposable.add(
+            carRepository.addSelectCar(selectedCarEntity)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+        )
+
+    }
+
     fun bindImages(t: CarDetail) {
         imageList.clear()
         t.photos?.let {
@@ -74,6 +94,10 @@ class DetailViewModel @Inject constructor(private val carRepository: CarReposito
 
     fun onClickBack(onBackClick: () -> Unit) {
         this.onBackClick = onBackClick
+    }
+
+    fun onClickWhatsApp(view: View) {
+        _message.value = ""
     }
 
     override fun onCleared() {

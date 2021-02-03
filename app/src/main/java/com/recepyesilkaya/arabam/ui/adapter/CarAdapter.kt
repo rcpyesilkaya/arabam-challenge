@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.recepyesilkaya.arabam.data.model.CarResponse
 import com.recepyesilkaya.arabam.util.State
 
-class CarListAdapter(private val retry: () -> Unit) :
+class CarListAdapter(
+    private val retry: () -> Unit
+) :
     PagedListAdapter<CarResponse, RecyclerView.ViewHolder>(CarDiffCallback) {
 
     private val DATA_VIEW_TYPE = 1
@@ -17,7 +19,9 @@ class CarListAdapter(private val retry: () -> Unit) :
 
     private lateinit var carItemClick: (Long) -> Unit
 
-    fun onClickItem(carItemClick: (Long) -> Unit) {
+    fun onClickItem(
+        carItemClick: (Long) -> Unit
+    ) {
         this.carItemClick = carItemClick
     }
 
@@ -62,4 +66,5 @@ class CarListAdapter(private val retry: () -> Unit) :
         this.state = state
         notifyItemChanged(super.getItemCount())
     }
+
 }

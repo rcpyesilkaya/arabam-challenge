@@ -7,7 +7,7 @@
 
         <variable
             name="car"
-            type="com.recepyesilkaya.arabam.ui.home.HomeViewState" />
+            type="com.recepyesilkaya.arabam.ui.home.HomeItemViewState" />
 
     </data>
 
@@ -32,7 +32,7 @@
             android:id="@+id/layoutPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/red_500"
+            android:background="@{car.selectedCarsFind() ? @color/selected_black : @color/red_500}"
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/ivAdvert"
             app:layout_constraintStart_toStartOf="parent">
@@ -55,7 +55,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@{car.categoryName}"
-            android:textColor="@color/text_light_black"
+            android:textColor="@{car.selectedCarsFind() ? @color/selected_black : @color/text_light_black}"
             android:textSize="@dimen/text_size_12sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +69,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:text="@{car.title}"
-            android:textColor="@color/text_light_black"
+            android:textColor="@{car.selectedCarsFind() ? @color/selected_black : @color/text_light_black}"
             android:textSize="@dimen/text_size_12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCategory" />
@@ -81,7 +81,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@{car.location}"
-            android:textColor="@color/grey_light"
+            android:textColor="@{car.selectedCarsFind() ? @color/selected_black : @color/grey_light}"
             android:textSize="@dimen/text_size_12sp"
             app:drawableStartCompat="@drawable/ic_location"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +94,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:text="@{car.dateFormatted}"
-            android:textColor="@color/grey_light"
+            android:textColor="@{car.selectedCarsFind() ? @color/selected_black : @color/grey_light}"
             android:textSize="@dimen/text_size_12sp"
             app:drawableStartCompat="@drawable/ic_calendar"
             app:layout_constraintEnd_toEndOf="parent"
@@ -118,7 +118,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
             android:text="@{car.properties}"
-            android:textColor="@color/text_light_black"
+            android:textColor="@{car.selectedCarsFind() ? @color/selected_black : @color/text_light_black}"
             android:textSize="@dimen/text_size_12sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"

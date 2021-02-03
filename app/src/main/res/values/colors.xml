@@ -15,4 +15,7 @@
     <color name="blue_action">#FF328FCC</color>
     <color name="text_black">#FF1A1A1A</color>
     <color name="text_light_black">#FF424242</color>
+    <color name="selected_black">#689191</color>
+    <color name="green">#30B335</color>
+    <color name="some_color">#50000000</color>
 </resources>

@@ -84,6 +84,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="60dp"
                 android:orientation="vertical"
                 android:visibility="@{viewModel.carDetailResource.state==State.SUCCESS ? View.VISIBLE : View.GONE, default=visible}"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -167,6 +168,63 @@
                     </LinearLayout>
 
                 </androidx.core.widget.NestedScrollView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="@{viewModel.carDetailResource.state==State.SUCCESS ? View.VISIBLE : View.GONE, default=visible}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:background="@color/blue_action"
+                    android:elevation="8dp"
+                    app:cardCornerRadius="8dp">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnCall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blue_action"
+                        android:drawableBottom="@drawable/ic_call"
+                        android:gravity="center"
+                        android:text="@string/fragment_detail_call"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_16sp"
+                        android:textStyle="bold"
+                        tools:ignore="RtlCompat" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:background="@color/blue_action"
+                    android:elevation="8dp"
+                    app:cardCornerRadius="8dp">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnWhatsApp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/green"
+                        android:drawableBottom="@drawable/ic_message"
+                        android:onClick="@{viewModel.onClickWhatsApp}"
+                        android:text="@string/fragment_detail_whatsapp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_16sp"
+                        android:textStyle="bold" />
+                </androidx.cardview.widget.CardView>
 
             </LinearLayout>
 

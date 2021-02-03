@@ -1,19 +1,28 @@
 package com.recepyesilkaya.arabam.ui.detail
 
+import android.app.AlertDialog
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.recepyesilkaya.arabam.R
 import com.recepyesilkaya.arabam.data.mock.Mock
 import com.recepyesilkaya.arabam.data.model.CarDetail
+import com.recepyesilkaya.arabam.data.model.User
 import com.recepyesilkaya.arabam.databinding.FragmentDetailBinding
 import com.recepyesilkaya.arabam.ui.adapter.CarAdvertDetailViewPagerAdapter
 import com.recepyesilkaya.arabam.util.State
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.layout_user.*
+
 
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
@@ -22,10 +31,13 @@ class DetailFragment : Fragment() {
     private lateinit var binding: FragmentDetailBinding
     private val detailViewModel: DetailViewModel by viewModels()
 
+    private var user: User? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Mock.childFragmentManager = childFragmentManager
         binding = FragmentDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -38,6 +50,7 @@ class DetailFragment : Fragment() {
         bindImageSize()
         initObserve()
         bindOnClickBack()
+        bindAlertDialog()
     }
 
     private fun initDetail() {
@@ -46,6 +59,7 @@ class DetailFragment : Fragment() {
         }
         carId?.let {
             detailViewModel.getCarDetail(it)
+            detailViewModel.addSelectedCar(it.toInt())
         }
     }
 
@@ -67,7 +81,30 @@ class DetailFragment : Fragment() {
                     addAdvertInfo(carDetail)
                     bindViewPager()
                     detailViewModel.bindImages(carDetail)
+                    this.user = carDetail.userInfo
                 }
+            }
+        })
+
+        detailViewModel.message.observe(viewLifecycleOwner, Observer {
+            detailViewModel.carDetail
+            val message = String.format(
+                getString(R.string.whatsapp_message),
+                detailViewModel.carDetail?.title,
+                detailViewModel.carDetail?.modelName,
+                detailViewModel.carDetail?.priceFormatted
+            )
+
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "text/plain"
+            intent.setPackage("com.whatsapp")
+            intent.putExtra(Intent.EXTRA_TEXT, message)
+            context?.let {
+                ContextCompat.startActivity(
+                    it,
+                    intent,
+                    intent.getBundleExtra(Intent.EXTRA_TEXT)
+                )
             }
         })
     }
@@ -76,11 +113,35 @@ class DetailFragment : Fragment() {
         detailViewModel.onClickBack {
             activity?.onBackPressed()
         }
+
+    }
+
+    private fun bindAlertDialog() {
+        binding.btnCall.setOnClickListener {
+            val mDialogView =
+                LayoutInflater.from(context).inflate(R.layout.layout_user, null)
+            val mBuilder = AlertDialog.Builder(context).setView(mDialogView).show()
+            mBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            mBuilder.show()
+            mBuilder.tvUserNameSurname.text = detailViewModel.carDetail?.userInfo?.nameSurname
+            mBuilder.tvPhone.text = detailViewModel.carDetail?.userInfo?.phoneFormatted
+
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:${detailViewModel.carDetail?.userInfo?.phone}")
+            mBuilder.tvPhone.setOnClickListener {
+                startActivity(intent)
+            }
+        }
     }
 
     private fun bindViewPager() {
         binding.vpProperty.adapter =
-            CarAdvertDetailViewPagerAdapter(Mock.getListFragment(), childFragmentManager)
+            Mock.childFragmentManager?.let {
+                CarAdvertDetailViewPagerAdapter(
+                    Mock.getListFragment(),
+                    it
+                )
+            }
         binding.tlProperty.setupWithViewPager(binding.vpProperty)
     }
 
@@ -88,4 +149,5 @@ class DetailFragment : Fragment() {
         Mock.description = carDetail.text.toString()
         Mock.carAdvertInfo(requireContext(), carDetail)
     }
+
 }

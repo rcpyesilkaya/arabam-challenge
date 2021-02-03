@@ -3,6 +3,7 @@ package com.recepyesilkaya.arabam.module
 import android.content.Context
 import androidx.room.Room
 import com.recepyesilkaya.arabam.data.local.dao.CarDAO
+import com.recepyesilkaya.arabam.data.local.dao.SelectedCarDAO
 import com.recepyesilkaya.arabam.data.local.database.CarRoomDatabase
 import dagger.Module
 import dagger.Provides
@@ -25,4 +26,9 @@ object RoomModule {
     @Singleton
     fun carDAO(cryptoDatabase: CarRoomDatabase): CarDAO =
         cryptoDatabase.carDAO()
+
+    @Provides
+    @Singleton
+    fun selectedCarDAO(cryptoDatabase: CarRoomDatabase): SelectedCarDAO =
+        cryptoDatabase.selectedCarDAO()
 }

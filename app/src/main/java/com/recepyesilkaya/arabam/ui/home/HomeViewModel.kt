@@ -1,12 +1,10 @@
 package com.recepyesilkaya.arabam.ui.home
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.recepyesilkaya.arabam.data.local.entity.SelectedCarEntity
 import com.recepyesilkaya.arabam.data.model.CarResponse
 import com.recepyesilkaya.arabam.data.paging.CarDataSource
 import com.recepyesilkaya.arabam.data.paging.CarDataSourceFactory
@@ -17,6 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,6 +30,11 @@ class HomeViewModel @Inject constructor(
 
     var cars: LiveData<PagedList<CarResponse>>
     private val pageSize = 10
+    var firstTime = true
+
+    private val _selectedCars = MutableLiveData<List<SelectedCarEntity>>()
+    val selectedCars: LiveData<List<SelectedCarEntity>>
+        get() = _selectedCars
 
     init {
         val config = PagedList.Config.Builder()
@@ -75,6 +79,12 @@ class HomeViewModel @Inject constructor(
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe()
             )
+        }
+    }
+
+    fun getSelectedCars() {
+        viewModelScope.launch {
+            _selectedCars.postValue(carRepository.getAllSelectedCars())
         }
     }
 

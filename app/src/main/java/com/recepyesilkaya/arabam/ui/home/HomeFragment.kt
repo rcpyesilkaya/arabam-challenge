@@ -8,9 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.recepyesilkaya.arabam.data.mock.Mock
 import com.recepyesilkaya.arabam.databinding.FragmentHomeBinding
 import com.recepyesilkaya.arabam.ui.adapter.CarListAdapter
 import com.recepyesilkaya.arabam.util.State
+import com.recepyesilkaya.arabam.util.toArray
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -26,6 +28,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Mock.childFragmentManager=parentFragmentManager
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -35,10 +38,13 @@ class HomeFragment : Fragment() {
         binding.viewModel = homeViewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        homeViewModel.getSelectedCars()
         initAdapter()
-        initState()
         initOnClickAdapterItem()
+        initState()
         initObserve()
+
+
     }
 
     private fun initAdapter() {
@@ -62,9 +68,11 @@ class HomeFragment : Fragment() {
 
     private fun initOnClickAdapterItem() {
         carListAdapter.onClickItem {
+            Mock.idBackForSelectedCar = it.toInt()
             val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(it)
             findNavController().navigate(action)
         }
+
     }
 
 
@@ -74,6 +82,14 @@ class HomeFragment : Fragment() {
                  Log.e("JRDev",it.title.toString())
              }
          })*/
+        homeViewModel.selectedCars.observe(viewLifecycleOwner, Observer {
+            Mock.selectedCars = it.toArray()
+            if (homeViewModel.firstTime) {
+                initAdapter()
+                initOnClickAdapterItem()
+                homeViewModel.firstTime = false
+            }
+        })
     }
 
 }
