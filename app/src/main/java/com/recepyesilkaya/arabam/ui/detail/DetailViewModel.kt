@@ -4,7 +4,6 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.denzcoskun.imageslider.models.SlideModel
 import com.recepyesilkaya.arabam.data.local.entity.SelectedCarEntity
 import com.recepyesilkaya.arabam.data.model.CarDetail
 import com.recepyesilkaya.arabam.data.repository.CarRepository
@@ -14,20 +13,21 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import org.imaginativeworld.whynotimagecarousel.CarouselItem
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(private val carRepository: CarRepository) : ViewModel() {
 
     lateinit var imageSize: String
-    private var imageList = ArrayList<SlideModel>()
+    private var imageList = ArrayList<CarouselItem>()
     lateinit var onBackClick: () -> Unit
 
     private val compositeDisposable = CompositeDisposable()
     var carDetailResource = MutableLiveData<Resource<CarDetail>>()
 
-    private val _images = MutableLiveData<ArrayList<SlideModel>>()
-    val images: LiveData<ArrayList<SlideModel>>
+    private val _images = MutableLiveData<ArrayList<CarouselItem>>()
+    val images: LiveData<ArrayList<CarouselItem>>
         get() = _images
 
     private val _message = MutableLiveData<String>()
@@ -86,7 +86,7 @@ class DetailViewModel @Inject constructor(private val carRepository: CarReposito
         t.photos?.let {
             it.forEach { url ->
                 val urlChange = url.replace("{0}", imageSize)
-                imageList.add(SlideModel(urlChange))
+                imageList.add(CarouselItem(urlChange))
             }
         }
         _images.value = imageList

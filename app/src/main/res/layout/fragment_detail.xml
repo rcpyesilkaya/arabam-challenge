@@ -82,6 +82,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
+                android:id="@+id/containerDetail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="60dp"
@@ -112,16 +113,12 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <com.denzcoskun.imageslider.ImageSlider
-                            android:id="@+id/image_slider"
-                            android:layout_width="wrap_content"
+                        <org.imaginativeworld.whynotimagecarousel.ImageCarousel
+                            android:id="@+id/carousel"
+                            android:layout_width="match_parent"
                             android:layout_height="300dp"
-                            app:auto_cycle="true"
-                            app:corner_radius="20"
-                            app:delay="0"
-                            app:period="5000"
-                            app:selected_dot="@drawable/default_selected_dot"
-                            app:unselected_dot="@drawable/default_unselected_dot" />
+                            app:imageScaleType="fitCenter"
+                            app:itemLayout="@layout/item_carousel" />
 
                         <TextView
                             android:id="@+id/tvCategory"
@@ -172,6 +169,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/containerCTA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

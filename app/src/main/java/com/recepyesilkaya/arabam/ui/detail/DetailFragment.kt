@@ -21,7 +21,10 @@ import com.recepyesilkaya.arabam.databinding.FragmentDetailBinding
 import com.recepyesilkaya.arabam.ui.adapter.CarAdvertDetailViewPagerAdapter
 import com.recepyesilkaya.arabam.util.State
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.layout_full_screen_image.*
 import kotlinx.android.synthetic.main.layout_user.*
+import org.imaginativeworld.whynotimagecarousel.CarouselItem
+import org.imaginativeworld.whynotimagecarousel.OnItemClickListener
 
 
 @AndroidEntryPoint
@@ -49,7 +52,7 @@ class DetailFragment : Fragment() {
         initDetail()
         bindImageSize()
         initObserve()
-        bindOnClickBack()
+        bindOnClick()
         bindAlertDialog()
     }
 
@@ -70,11 +73,10 @@ class DetailFragment : Fragment() {
 
     private fun initObserve() {
         detailViewModel.images.observe(viewLifecycleOwner, Observer {
-            it?.let { slideModel ->
-                binding.imageSlider.setImageList(slideModel)
+            it?.let { carousel ->
+                binding.carousel.addData(carousel)
             }
         })
-
         detailViewModel.carDetailResource.observe(viewLifecycleOwner, Observer { resource ->
             if (resource.state == State.SUCCESS) {
                 resource.data?.let { carDetail ->
@@ -87,7 +89,7 @@ class DetailFragment : Fragment() {
         })
 
         detailViewModel.message.observe(viewLifecycleOwner, Observer {
-            detailViewModel.carDetail
+
             val message = String.format(
                 getString(R.string.whatsapp_message),
                 detailViewModel.carDetail?.title,
@@ -109,11 +111,10 @@ class DetailFragment : Fragment() {
         })
     }
 
-    private fun bindOnClickBack() {
+    private fun bindOnClick() {
         detailViewModel.onClickBack {
             activity?.onBackPressed()
         }
-
     }
 
     private fun bindAlertDialog() {
@@ -131,6 +132,27 @@ class DetailFragment : Fragment() {
             mBuilder.tvPhone.setOnClickListener {
                 startActivity(intent)
             }
+        }
+
+        binding.carousel.onItemClickListener = object : OnItemClickListener {
+            override fun onClick(position: Int, carouselItem: CarouselItem) {
+                val fullScreenDialogView =
+                    LayoutInflater.from(context).inflate(R.layout.layout_full_screen_image, null)
+                val fullScreenBuilder =
+                    AlertDialog.Builder(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+                        .setView(fullScreenDialogView).show()
+
+                detailViewModel.images.value?.let { fullScreenBuilder.ivFullScreen.addData(it) }
+
+                fullScreenBuilder.btnCallFullScreen.setOnClickListener {
+                    binding.btnCall.performClick()
+                }
+            }
+
+            override fun onLongClick(position: Int, dataObject: CarouselItem) {
+
+            }
+
         }
     }
 

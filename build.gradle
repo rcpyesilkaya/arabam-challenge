@@ -17,10 +17,11 @@ buildscript {
         lifecycle_ext_version = '2.1.1'
         paging_version = "2.1.2"
         glide_version = '4.9.0'
-        image_slide_show = '0.0.2'
         room_version = '2.2.6'
         hilt_version = "2.31.2-alpha"
         hilt_lifecycle_viewmodel="1.0.0-alpha03"
+        circleindicator="2.1.4"
+        why_not_image_carousel="v1.1.0"
     }
     repositories {
         google()
