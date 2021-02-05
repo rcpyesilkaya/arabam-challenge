@@ -18,5 +18,4 @@ interface CarDAO {
 
     @Query("DELETE FROM entity_car")
     fun deleteAll()
-
 }

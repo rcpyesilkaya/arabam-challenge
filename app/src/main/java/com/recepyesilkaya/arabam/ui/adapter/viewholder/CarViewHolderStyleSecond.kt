@@ -1,4 +1,4 @@
-package com.recepyesilkaya.arabam.ui.adapter
+package com.recepyesilkaya.arabam.ui.adapter.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,16 +8,18 @@ import com.recepyesilkaya.arabam.R
 import com.recepyesilkaya.arabam.data.local.entity.SelectedCarEntity
 import com.recepyesilkaya.arabam.data.mock.Mock
 import com.recepyesilkaya.arabam.data.model.CarResponse
-import com.recepyesilkaya.arabam.databinding.ItemCarBinding
+import com.recepyesilkaya.arabam.databinding.ItemCarSecondStyleBinding
 import com.recepyesilkaya.arabam.ui.home.HomeItemViewState
 
-class CarViewHolder(val binding: ItemCarBinding) : RecyclerView.ViewHolder(binding.root) {
+
+class CarViewHolderStyleSecond(val binding: ItemCarSecondStyleBinding) :
+    RecyclerView.ViewHolder(binding.root) {
     fun bind(
         car: CarResponse?,
         carItemClick: (Long) -> Unit,
     ) {
         car?.let { carItem ->
-            Mock.selectedCars?.add(SelectedCarEntity(Mock.idBackForSelectedCar))
+            Mock.selectedCars?.add(SelectedCarEntity(Mock.selectedCarForBackId))
             binding.car = HomeItemViewState(carItem, Mock.selectedCars)
             binding.root.setOnClickListener {
                 binding.car = HomeItemViewState(carItem, Mock.selectedCars)
@@ -27,14 +29,14 @@ class CarViewHolder(val binding: ItemCarBinding) : RecyclerView.ViewHolder(bindi
     }
 
     companion object {
-        fun create(parent: ViewGroup): CarViewHolder {
-            val binding: ItemCarBinding = DataBindingUtil.inflate(
+        fun create(parent: ViewGroup): CarViewHolderStyleSecond {
+            val binding: ItemCarSecondStyleBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.item_car,
+                R.layout.item_car_second_style,
                 parent,
                 false
             )
-            return CarViewHolder(binding)
+            return CarViewHolderStyleSecond(binding)
         }
     }
 }

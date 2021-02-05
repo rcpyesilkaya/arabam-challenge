@@ -1,11 +1,14 @@
 package com.recepyesilkaya.arabam.ui.detail
 
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.recepyesilkaya.arabam.data.local.entity.SelectedCarEntity
 import com.recepyesilkaya.arabam.data.model.CarDetail
+import com.recepyesilkaya.arabam.data.model.User
 import com.recepyesilkaya.arabam.data.repository.CarRepository
 import com.recepyesilkaya.arabam.util.Resource
 import com.recepyesilkaya.arabam.util.State
@@ -21,20 +24,21 @@ class DetailViewModel @Inject constructor(private val carRepository: CarReposito
 
     lateinit var imageSize: String
     private var imageList = ArrayList<CarouselItem>()
-    lateinit var onBackClick: () -> Unit
-
     private val compositeDisposable = CompositeDisposable()
+
+    var carDetail = MutableLiveData<CarDetail>()
+    var userInfo = MutableLiveData<User>()
+    var carShareInfo = MutableLiveData<String>()
     var carDetailResource = MutableLiveData<Resource<CarDetail>>()
+    var selectionCarId: Long? = null
+
+    lateinit var onBackClick: () -> Unit
+    lateinit var startIntentPhone: (Intent) -> Unit
+    lateinit var startIntentShareCar: (Intent) -> Unit
 
     private val _images = MutableLiveData<ArrayList<CarouselItem>>()
     val images: LiveData<ArrayList<CarouselItem>>
         get() = _images
-
-    private val _message = MutableLiveData<String>()
-    val message: LiveData<String>
-        get() = _message
-
-    var carDetail: CarDetail? = null
 
     fun getCarDetail(id: Long) {
         carDetailResource.postValue(Resource(state = State.LOADING, data = null, message = ""))
@@ -53,7 +57,7 @@ class DetailViewModel @Inject constructor(private val carRepository: CarReposito
                                     message = null
                                 )
                             )
-                            carDetail = it
+                            carDetail.value = it
                         }
                     },
                     { error ->
@@ -71,19 +75,17 @@ class DetailViewModel @Inject constructor(private val carRepository: CarReposito
 
     fun addSelectedCar(id: Int) {
         val selectedCarEntity = SelectedCarEntity(id)
-
         compositeDisposable.add(
             carRepository.addSelectCar(selectedCarEntity)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
         )
-
     }
 
-    fun bindImages(t: CarDetail) {
+    fun bindImages(carDetail: CarDetail) {
         imageList.clear()
-        t.photos?.let {
+        carDetail.photos?.let {
             it.forEach { url ->
                 val urlChange = url.replace("{0}", imageSize)
                 imageList.add(CarouselItem(urlChange))
@@ -96,8 +98,26 @@ class DetailViewModel @Inject constructor(private val carRepository: CarReposito
         this.onBackClick = onBackClick
     }
 
+    fun onClickPhone(view: View) {
+        val intent = Intent(Intent.ACTION_DIAL)
+        intent.data = Uri.parse("tel:${carDetail.value?.userInfo?.phone}")
+        startIntentPhone.invoke(intent)
+    }
+
     fun onClickWhatsApp(view: View) {
-        _message.value = ""
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.setPackage("com.whatsapp")
+        intent.putExtra(Intent.EXTRA_TEXT, carShareInfo.value)
+        startIntentShareCar.invoke(intent)
+    }
+
+    fun bindHigherOrderPhone(startIntentPhone: (Intent) -> Unit) {
+        this.startIntentPhone = startIntentPhone
+    }
+
+    fun bindHigherOrderShareCar(startIntentShareCar: (Intent) -> Unit) {
+        this.startIntentShareCar = startIntentShareCar
     }
 
     override fun onCleared() {

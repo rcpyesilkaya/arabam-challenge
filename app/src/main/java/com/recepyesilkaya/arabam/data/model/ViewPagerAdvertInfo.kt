@@ -1,6 +1,6 @@
 package com.recepyesilkaya.arabam.data.model
 
-data class CarAdvertInfo(
+data class ViewPagerAdvertInfo(
     var key: String?,
     var value: String?
 )

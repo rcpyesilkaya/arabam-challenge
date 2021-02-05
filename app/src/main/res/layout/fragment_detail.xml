@@ -118,7 +118,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="300dp"
                             app:imageScaleType="fitCenter"
-                            app:itemLayout="@layout/item_carousel" />
+                            app:itemLayout="@layout/item_carousel"
+                            tools:ignore="MissingClass" />
 
                         <TextView
                             android:id="@+id/tvCategory"

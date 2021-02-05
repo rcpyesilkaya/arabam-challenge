@@ -14,7 +14,6 @@ class CarDataSourceFactory @Inject constructor(
 ) : DataSource.Factory<Int, CarResponse>() {
 
     val carsDataSourceLiveData = MutableLiveData<CarDataSource>()
-
     override fun create(): DataSource<Int, CarResponse> {
         carsDataSourceLiveData.postValue(carDataSource)
         return carDataSource

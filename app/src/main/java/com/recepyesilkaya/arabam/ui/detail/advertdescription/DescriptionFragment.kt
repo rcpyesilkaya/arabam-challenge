@@ -1,4 +1,4 @@
-package com.recepyesilkaya.arabam.ui.detail.description
+package com.recepyesilkaya.arabam.ui.detail.advertdescription
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,6 @@ import com.recepyesilkaya.arabam.databinding.FragmentDescriptionBinding
 
 
 class DescriptionFragment : Fragment() {
-
     private lateinit var binding: FragmentDescriptionBinding
 
     override fun onCreateView(
@@ -22,6 +21,6 @@ class DescriptionFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.description = Mock.description
+        binding.description = Mock.viewPagerAdvertDescription
     }
 }

@@ -8,7 +8,7 @@
 
         <variable
             name="carAdvertInfo"
-            type="com.recepyesilkaya.arabam.data.model.CarAdvertInfo" />
+            type="com.recepyesilkaya.arabam.data.model.ViewPagerAdvertInfo" />
 
         <variable
             name="viewItemState"

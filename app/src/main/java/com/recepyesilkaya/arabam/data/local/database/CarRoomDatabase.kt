@@ -7,7 +7,6 @@ import com.recepyesilkaya.arabam.data.local.dao.SelectedCarDAO
 import com.recepyesilkaya.arabam.data.local.entity.CarEntity
 import com.recepyesilkaya.arabam.data.local.entity.SelectedCarEntity
 
-
 @Database(
     entities = [CarEntity::class, SelectedCarEntity::class],
     version = 1,

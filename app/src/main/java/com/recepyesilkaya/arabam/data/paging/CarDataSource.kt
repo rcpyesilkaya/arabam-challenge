@@ -2,10 +2,12 @@ package com.recepyesilkaya.arabam.data.paging
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
+import com.recepyesilkaya.arabam.data.local.dao.CarDAO
 import com.recepyesilkaya.arabam.data.mock.Mock
 import com.recepyesilkaya.arabam.data.model.CarResponse
 import com.recepyesilkaya.arabam.data.network.APIService
 import com.recepyesilkaya.arabam.util.State
+import com.recepyesilkaya.arabam.util.toEntity
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -16,6 +18,7 @@ import javax.inject.Inject
 
 class CarDataSource @Inject constructor(
     private val apiService: APIService,
+    private val carDAO: CarDAO,
     private val compositeDisposable: CompositeDisposable
 ) : PageKeyedDataSource<Int, CarResponse>() {
 
@@ -28,49 +31,68 @@ class CarDataSource @Inject constructor(
     ) {
         updateState(State.LOADING)
         compositeDisposable.add(
-            apiService.getData(0, params.requestedLoadSize)
-                .subscribe(
-                    { response ->
-                        updateState(State.SUCCESS)
-                        callback.onResult(
-                            response,
-                            null,
-                            10
-                        )
-                    },
-                    {
-                        updateState(State.ERROR)
-                        setRetry(Action { loadInitial(params, callback) })
+            apiService.getData(
+                0,
+                params.requestedLoadSize,
+                Mock.advertSort.sortType,
+                Mock.advertSort.sortDirections,
+                Mock.advertFilter.minYear,
+                Mock.advertFilter.maxYear,
+                Mock.advertFilter.category,
+                Mock.advertFilter.minDate,
+                Mock.advertFilter.maxDate
+            ).subscribe(
+                { response ->
+                    updateState(State.SUCCESS)
+                    callback.onResult(response, null, 10)
+                    response.forEach {
+                        carDAO.insert(it.toEntity())
+                            .subscribeOn(Schedulers.newThread())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe()
                     }
-                )
+                },
+                {
+                    updateState(State.ERROR)
+                    setRetry(Action { loadInitial(params, callback) })
+                }
+            )
         )
     }
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, CarResponse>) {
-    }
+
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, CarResponse>) {}
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, CarResponse>) {
         updateState(State.LOADING)
-        Mock.skip += 10
+        Mock.requestSkip += 10
         compositeDisposable.add(
-            apiService.getData(Mock.skip, params.requestedLoadSize)
-                .subscribe(
-                    { response ->
-                        updateState(State.SUCCESS)
-                        callback.onResult(
-                            response,
-                            Mock.skip + 10
-                        )
-                    },
-                    {
-                        updateState(State.ERROR)
-                        setRetry(Action { loadAfter(params, callback) })
+            apiService.getData(
+                Mock.requestSkip,
+                params.requestedLoadSize,
+                Mock.advertSort.sortType,
+                Mock.advertSort.sortDirections,
+                Mock.advertFilter.minYear,
+                Mock.advertFilter.maxYear,
+                Mock.advertFilter.category,
+                Mock.advertFilter.minDate,
+                Mock.advertFilter.maxDate
+            ).subscribe(
+                { response ->
+                    updateState(State.SUCCESS)
+                    callback.onResult(response, Mock.requestSkip + 10)
+                    response.forEach {
+                        carDAO.insert(it.toEntity())
+                            .subscribeOn(Schedulers.newThread())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe()
                     }
-                )
+                },
+                {
+                    updateState(State.ERROR)
+                    setRetry(Action { loadAfter(params, callback) })
+                }
+            )
         )
-    }
-
-    private fun updateState(state: State) {
-        this.state.postValue(state)
     }
 
     fun retry() {
@@ -86,5 +108,9 @@ class CarDataSource @Inject constructor(
 
     private fun setRetry(action: Action?) {
         retryCompletable = if (action == null) null else Completable.fromAction(action)
+    }
+
+    private fun updateState(state: State) {
+        this.state.postValue(state)
     }
 }

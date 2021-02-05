@@ -1,21 +1,21 @@
 package com.recepyesilkaya.arabam.ui.home
 
-import android.util.Log
+import android.content.Context
 import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.recepyesilkaya.arabam.data.local.entity.SelectedCarEntity
+import com.recepyesilkaya.arabam.data.mock.Mock
 import com.recepyesilkaya.arabam.data.model.CarResponse
+import com.recepyesilkaya.arabam.data.model.Sort
 import com.recepyesilkaya.arabam.data.paging.CarDataSource
 import com.recepyesilkaya.arabam.data.paging.CarDataSourceFactory
 import com.recepyesilkaya.arabam.data.repository.CarRepository
 import com.recepyesilkaya.arabam.util.State
-import com.recepyesilkaya.arabam.util.toEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,6 +36,19 @@ class HomeViewModel @Inject constructor(
     val selectedCars: LiveData<List<SelectedCarEntity>>
         get() = _selectedCars
 
+    private val _sort = MutableLiveData<Sort?>()
+    val sort: LiveData<Sort?>
+        get() = _sort
+
+    val isStyleChange = MutableLiveData<Boolean>()
+
+    val isFilter = MutableLiveData<Boolean>(true)
+
+    val c = Calendar.getInstance()
+    val year = c.get(Calendar.YEAR)
+    val month = c.get(Calendar.MONTH)
+    val day = c.get(Calendar.DAY_OF_MONTH)
+
     init {
         val config = PagedList.Config.Builder()
             .setPageSize(pageSize)
@@ -43,7 +56,7 @@ class HomeViewModel @Inject constructor(
             .setEnablePlaceholders(false)
             .build()
         cars = LivePagedListBuilder(carDataSourceFactory, config).build()
-
+        isStyleChange.value = false
     }
 
     fun getState(): LiveData<State> =
@@ -58,34 +71,38 @@ class HomeViewModel @Inject constructor(
         return cars.value?.isEmpty() ?: true
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.dispose()
-    }
-
     fun checkVisibility(state: State?) {
         loadingValue.value = listIsEmpty() && state == State.LOADING
         errorValue.value = listIsEmpty() && state == State.ERROR
-        Log.e("JRDevRloadingValue", errorValue.value.toString())
-        Log.e("JRDevRerrorValue", loadingValue.value.toString())
-        Log.e("JRDevRX", state?.name.toString())
-    }
-
-    fun carsAddDatabase(carResponse: List<CarResponse>) {
-        carResponse.forEach {
-            compositeDisposable.add(
-                carRepository.insert(it.toEntity())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()
-            )
-        }
     }
 
     fun getSelectedCars() {
         viewModelScope.launch {
             _selectedCars.postValue(carRepository.getAllSelectedCars())
         }
+    }
+
+    fun sortResult(sort: Sort?, context: Context, message: String?) {
+        var result: Sort? = null
+        message?.let { message ->
+            result = Mock.getSortList(context)
+                .find { it.sortMessage == message || it.sortMessageOther == message }
+        }
+
+        sort?.let { sort ->
+            result = Mock.getSortList(context).find { it.sortName == sort.sortName }
+        }
+
+        result?.let {
+            Mock.advertSort = it
+        }
+
+        _sort.value = result
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.dispose()
     }
 
 }

@@ -1,6 +1,5 @@
-package com.recepyesilkaya.arabam.ui.adapter
+package com.recepyesilkaya.arabam.ui.adapter.viewholder
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -15,10 +14,6 @@ class ListFooterViewHolder(val binding: ItemListFooterBinding) :
     fun bind(state: State?) {
         binding.stateProgress = state == State.LOADING
         binding.stateError = state == State.ERROR
-
-        Log.e("JRDevR----binding.stateProgress", binding.stateProgress.toString())
-        Log.e("JRDevR----binding.stateError", binding.stateError.toString())
-        Log.e("JRDevR----", state?.name.toString())
     }
 
     companion object {

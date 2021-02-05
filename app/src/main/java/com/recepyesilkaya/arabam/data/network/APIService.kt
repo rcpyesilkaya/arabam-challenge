@@ -10,10 +10,17 @@ interface APIService {
     @GET("/api/v1/listing")
     fun getData(
         @Query("skip") skip: Int,
-        @Query("take") take: Int
+        @Query("take") take: Int,
+        @Query("sort") sort: Int?,
+        @Query("sortDirection") sortDirection: Int?,
+        @Query("minYear") minYear: Int?,
+        @Query("maxYear") maxYear: Int?,
+        @Query("categoryId") categoryId: Int?,
+        @Query("minDate") minDate: String?,
+        @Query("maxDate") maxDate: String?
+
     ): Single<List<CarResponse>>
 
     @GET("/api/v1/detail")
     fun getDetail(@Query("id") id: Long): Single<CarDetail?>
-
 }

@@ -1,19 +1,37 @@
 package com.recepyesilkaya.arabam.util
 
+import android.content.Context
 import android.os.Build
 import android.text.Html
 import android.text.Spanned
 import android.widget.ImageView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.recepyesilkaya.arabam.R
 import com.recepyesilkaya.arabam.data.local.entity.CarEntity
 import com.recepyesilkaya.arabam.data.local.entity.SelectedCarEntity
 import com.recepyesilkaya.arabam.data.model.CarResponse
 import com.recepyesilkaya.arabam.data.model.Property
 
-fun ImageView.downloadImageFromUrl(url: String?) {
+fun ImageView.downloadImageFromUrl(url: String?, progressDrawable: CircularProgressDrawable) {
+    val options = RequestOptions()
+        .placeholder(progressDrawable)
+        .error(R.drawable.error_image)
+
     Glide.with(context)
+        .setDefaultRequestOptions(options)
         .load(url)
         .into(this)
+}
+
+
+fun getPlaceHolder(context: Context): CircularProgressDrawable {
+    return CircularProgressDrawable(context).apply {
+        strokeWidth = 8f
+        centerRadius = 40f
+        start()
+    }
 }
 
 fun String?.toHtml(): Spanned? {
@@ -65,7 +83,6 @@ fun List<SelectedCarEntity>.toArray(): ArrayList<SelectedCarEntity> {
     }
     return temps
 }
-
 
 
 

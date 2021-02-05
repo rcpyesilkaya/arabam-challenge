@@ -12,12 +12,9 @@ class CarAdvertDetailViewPagerAdapter(
     fragmentManager,
     BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
 ) {
-    override fun getCount(): Int =
-        fragmentList.size
+    override fun getCount(): Int = fragmentList.size
 
-    override fun getItem(position: Int): Fragment =
-        fragmentList[position].fragment
+    override fun getItem(position: Int): Fragment = fragmentList[position].fragment
 
-    override fun getPageTitle(position: Int): CharSequence? =
-        fragmentList[position].title
+    override fun getPageTitle(position: Int): CharSequence? = fragmentList[position].title
 }

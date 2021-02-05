@@ -6,6 +6,7 @@
     <string name="location">%1$s / %2$s</string>
     <string name="image_size">%1$dx%2$d</string>
     <string name="whatsapp_message"> %1$s \n\nModel =  %2$s \n\nFiyat =  %3$s </string>
+    <string name="spinner_select">Seçiniz..</string>
 
     <!--Advert-->
     <string name="advert_no_title">İlan No</string>
@@ -27,5 +28,53 @@
 
     <string name="fragment_detail_call">Ara</string>
     <string name="fragment_detail_whatsapp">WhatsApp</string>
+    <string name="fragment_home_sort_result_error_info">İfade Ettiğiniz Sıralama Mevcut Değil</string>
+
+
+    <!--Sort-->
+    <string name="speach_to_text_title">Sırala</string>
+    <string name="speach_to_text_info">Dilerseniz Mikrofon Simgesine Tıklayıp Belirtilen Komutları Söyleyerek Sıramala Yapabilirsiniz.</string>
+
+    <string name="sort_type_price_desc_name">Fiyat - ucuzdan pahalıya</string>
+    <string name="sort_type_price_desc_message">fiyat ucuzdan pahalıya</string>
+    <string name="sort_type_price_desc_other_message">Fiyat ucuzdan pahalıya</string>
+
+    <string name="sort_type_price_asc_name">Fiyat - pahalıdan ucuza</string>
+    <string name="sort_type_price_asc_message">fiyat pahalıdan ucuza</string>
+    <string name="sort_type_price_asc_other_message">Fiyat pahalıdan ucuza</string>
+
+    <string name="sort_type_date_desc_name">İlan tarihi - eskiden yeniye</string>
+    <string name="sort_type_date_desc_message">ilan tarihi eskiden yeniye</string>
+    <string name="sort_type_date_desc_other_message">İlan tarihi eskiden yeniye</string>
+
+    <string name="sort_type_date_asc_name">İlan tarihi - yeniden eskiye</string>
+    <string name="sort_type_date_asc_message">ilan tarihi yeniden eskiye</string>
+    <string name="sort_type_date_asc_other_message">İlan tarihi yeniden eskiye</string>
+
+    <string name="sort_type_year_desc_name">Model yılı - eskiden yeniye</string>
+    <string name="sort_type_year_desc_message">model yılı eskiden yeniye</string>
+    <string name="sort_type_year_desc_other_message">Model yılı eskiden yeniye</string>
+
+    <string name="sort_type_year_asc_name">Model yılı - yeniden eskiye</string>
+    <string name="sort_type_year_asc_message">model yılı yeniden eskiye</string>
+    <string name="sort_type_year_asc_other_message">Model yılı yeniden eskiye</string>
+    <string name="layout_filter_title">Filtrele</string>
+    <string name="layout_filter_category">Kategori</string>
+
+    <string name="layout_filter_date_title">İlan Tarihi</string>
+    <string name="layout_filter_max_date">Maksimum</string>
+    <string name="layout_filter_min_date">Minimum</string>
+
+    <string name="layout_filter_year_title">Model Yılı</string>
+    <string name="layout_filter_min_year">Minimum</string>
+    <string name="layout_filter_max_year">Maksimum</string>
+    <string name="result_ok">TAMAM</string>
+
+
+    <string name="category">otomobil"/"renault"-"clio"-"1"-"5"-"bluedci"-"touch</string>
+    <string name="category1">otomobil"/"hyundai"-"elantra"-"1"-"6"-"mpi"-"elite</string>
+    <string name="category2">otomobil"/"honda"-"civic"-"1"-"6"-"es</string>
+    <string name="category3">otomobil"/"volkswagen"-"golf"-"1"-"6"-"primeline</string>
+    <string name="category4">otomobil"/"honda"-"accord"-"2"-"4"-"executive</string>
 
 </resources>

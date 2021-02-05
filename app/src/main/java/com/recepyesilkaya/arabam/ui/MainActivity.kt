@@ -11,7 +11,5 @@ class MainActivity : AppCompatActivity() {
         setTheme(R.style.Theme_Arabam)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        // Mock.childFragmentManager=supportFragmentManager
-
     }
 }

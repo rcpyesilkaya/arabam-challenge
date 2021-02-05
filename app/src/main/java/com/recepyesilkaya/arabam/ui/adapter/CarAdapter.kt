@@ -5,18 +5,21 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.recepyesilkaya.arabam.data.model.CarResponse
+import com.recepyesilkaya.arabam.ui.adapter.viewholder.CarViewHolder
+import com.recepyesilkaya.arabam.ui.adapter.viewholder.CarViewHolderStyleSecond
+import com.recepyesilkaya.arabam.ui.adapter.viewholder.ListFooterViewHolder
 import com.recepyesilkaya.arabam.util.State
 
+private const val DATA_VIEW_TYPE = 1
+private const val FOOTER_VIEW_TYPE = 2
+private const val DATA_VIEW_TYPE_CHANGES = 3
+
 class CarListAdapter(
+    private val isStyleChange: Boolean,
     private val retry: () -> Unit
 ) :
     PagedListAdapter<CarResponse, RecyclerView.ViewHolder>(CarDiffCallback) {
-
-    private val DATA_VIEW_TYPE = 1
-    private val FOOTER_VIEW_TYPE = 2
-
     private var state = State.LOADING
-
     private lateinit var carItemClick: (Long) -> Unit
 
     fun onClickItem(
@@ -26,20 +29,43 @@ class CarListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == DATA_VIEW_TYPE) CarViewHolder.create(parent) else ListFooterViewHolder.create(
-            retry,
-            parent
-        )
+        return when (viewType) {
+            DATA_VIEW_TYPE -> CarViewHolder.create(parent)
+            DATA_VIEW_TYPE_CHANGES -> CarViewHolderStyleSecond.create(parent)
+            else -> ListFooterViewHolder.create(retry, parent)
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (getItemViewType(position) == DATA_VIEW_TYPE) {
-            (holder as CarViewHolder).bind(getItem(position), carItemClick)
-        } else (holder as ListFooterViewHolder).bind(state)
+        when {
+            getItemViewType(position) == DATA_VIEW_TYPE -> {
+                (holder as CarViewHolder).bind(getItem(position), carItemClick)
+            }
+            getItemViewType(position) == DATA_VIEW_TYPE_CHANGES -> {
+                (holder as CarViewHolderStyleSecond).bind(getItem(position), carItemClick)
+            }
+            else -> (holder as ListFooterViewHolder).bind(state)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return super.getItemCount() + if (hasFooter()) 1 else 0
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position < super.getItemCount()) DATA_VIEW_TYPE else FOOTER_VIEW_TYPE
+        return if (position < super.getItemCount()) {
+            if (isStyleChange) DATA_VIEW_TYPE_CHANGES
+            else DATA_VIEW_TYPE
+        } else FOOTER_VIEW_TYPE
+    }
+
+    private fun hasFooter(): Boolean {
+        return super.getItemCount() != 0 && (state == State.LOADING || state == State.ERROR)
+    }
+
+    fun setState(state: State) {
+        this.state = state
+        notifyItemChanged(super.getItemCount())
     }
 
     companion object {
@@ -53,18 +79,4 @@ class CarListAdapter(
             }
         }
     }
-
-    override fun getItemCount(): Int {
-        return super.getItemCount() + if (hasFooter()) 1 else 0
-    }
-
-    private fun hasFooter(): Boolean {
-        return super.getItemCount() != 0 && (state == State.LOADING || state == State.ERROR)
-    }
-
-    fun setState(state: State) {
-        this.state = state
-        notifyItemChanged(super.getItemCount())
-    }
-
 }

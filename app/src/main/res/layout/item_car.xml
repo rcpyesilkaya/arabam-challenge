@@ -5,136 +5,136 @@
 
     <data>
 
+        <import type="android.content.Context" />
+
         <variable
             name="car"
             type="com.recepyesilkaya.arabam.ui.home.HomeItemViewState" />
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp">
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="4dp">
 
-        <ImageView
-            android:id="@+id/ivAdvert"
-            imageSize="@{@string/image_size(800,600)}"
-            loadImage="@{car.photo}"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="310dp"
-            android:contentDescription="@string/image"
-            android:scaleType="fitCenter"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <FrameLayout
-            android:id="@+id/layoutPrice"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@{car.selectedCarsFind() ? @color/selected_black : @color/red_500}"
-            android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/ivAdvert"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_marginBottom="6dp">
 
-            <TextView
-                android:id="@+id/tvPrice"
+            <ImageView
+                android:id="@+id/ivAdvert"
+                imageSize="@{@string/image_size(800,600)}"
+                loadImage="@{car.photo}"
+                android:layout_width="match_parent"
+                android:layout_height="310dp"
+                android:contentDescription="@string/image"
+                android:scaleType="fitCenter"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/layoutPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@{car.priceFormatted}"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_16sp"
-                android:textStyle="bold" />
-        </FrameLayout>
+                android:background="@{car.selectedCarsFind() ? @color/selected_black : @color/red_500}"
+                android:padding="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/ivAdvert"
+                app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:id="@+id/tvCategory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@{car.categoryName}"
-            android:textColor="@{car.selectedCarsFind() ? @color/selected_black : @color/text_light_black}"
-            android:textSize="@dimen/text_size_12sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutPrice" />
+                <TextView
+                    android:id="@+id/tvPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@{car.priceFormatted}"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_16sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
 
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:text="@{car.title}"
-            android:textColor="@{car.selectedCarsFind() ? @color/selected_black : @color/text_light_black}"
-            android:textSize="@dimen/text_size_12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCategory" />
+            <TextView
+                android:id="@+id/tvCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@{car.categoryName}"
+                android:textColor="@{car.selectedCarsFind() ? @color/selected_black : @color/text_light_black}"
+                android:textSize="@dimen/text_size_12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutPrice" />
 
-        <TextView
-            android:id="@+id/tvLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@{car.location}"
-            android:textColor="@{car.selectedCarsFind() ? @color/selected_black : @color/grey_light}"
-            android:textSize="@dimen/text_size_12sp"
-            app:drawableStartCompat="@drawable/ic_location"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="@{car.title}"
+                android:textColor="@{car.selectedCarsFind() ? @color/selected_black : @color/text_light_black}"
+                android:textSize="@dimen/text_size_12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCategory" />
 
-        <TextView
-            android:id="@+id/tvDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@{car.dateFormatted}"
-            android:textColor="@{car.selectedCarsFind() ? @color/selected_black : @color/grey_light}"
-            android:textSize="@dimen/text_size_12sp"
-            app:drawableStartCompat="@drawable/ic_calendar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@{car.location}"
+                android:textColor="@{car.selectedCarsFind() ? @color/selected_black : @color/grey_light}"
+                android:textSize="@dimen/text_size_12sp"
+                app:drawableStartCompat="@drawable/ic_location"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
-        <View
-            android:id="@+id/divider1"
-            android:layout_width="match_parent"
-            android:layout_height="0.11dp"
-            android:layout_marginTop="12dp"
-            android:background="@color/grey_light"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDate" />
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@{car.dateFormatted}"
+                android:textColor="@{car.selectedCarsFind() ? @color/selected_black : @color/grey_light}"
+                android:textSize="@dimen/text_size_12sp"
+                app:drawableStartCompat="@drawable/ic_calendar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
-        <TextView
-            android:id="@+id/tvFeatures"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="16dp"
-            android:text="@{car.properties}"
-            android:textColor="@{car.selectedCarsFind() ? @color/selected_black : @color/text_light_black}"
-            android:textSize="@dimen/text_size_12sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider1" />
+            <View
+                android:id="@+id/divider1"
+                android:layout_width="match_parent"
+                android:layout_height="0.11dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/grey_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="0.11dp"
-            android:layout_marginTop="12dp"
-            android:background="@color/grey_light"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvFeatures" />
+            <TextView
+                android:id="@+id/tvFeatures"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                android:text="@{car.properties}"
+                android:textColor="@{car.selectedCarsFind() ? @color/selected_black : @color/text_light_black}"
+                android:textSize="@dimen/text_size_12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider1" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
 </layout>

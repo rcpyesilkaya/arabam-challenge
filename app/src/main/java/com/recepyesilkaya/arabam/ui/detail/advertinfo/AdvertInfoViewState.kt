@@ -3,9 +3,9 @@ package com.recepyesilkaya.arabam.ui.detail.advertinfo
 import android.content.Context
 import androidx.core.content.ContextCompat
 import com.recepyesilkaya.arabam.R
-import com.recepyesilkaya.arabam.data.model.CarAdvertInfo
+import com.recepyesilkaya.arabam.data.model.ViewPagerAdvertInfo
 
-data class AdvertInfoViewState(private val advertInfo: CarAdvertInfo) {
+data class AdvertInfoViewState(private val advertInfo: ViewPagerAdvertInfo) {
 
     fun setTextColor(context: Context): Int {
         if (advertInfo.key == context.getString(R.string.advert_price_title)) {

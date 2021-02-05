@@ -8,7 +8,7 @@ import androidx.databinding.BindingAdapter
 fun ImageView.setImage(url: String?, imageSize: String) {
     if (!url.isNullOrEmpty()) {
         val urlChange = url.replace("{0}", imageSize)
-        this.downloadImageFromUrl(urlChange)
+        this.downloadImageFromUrl(urlChange, getPlaceHolder(this.context))
     }
 }
 
@@ -18,4 +18,5 @@ fun TextView?.toHtml(description: String) {
         this?.text = description.toHtml()
     }
 }
+
 

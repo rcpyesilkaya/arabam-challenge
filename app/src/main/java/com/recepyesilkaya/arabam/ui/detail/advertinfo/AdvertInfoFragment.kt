@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.recepyesilkaya.arabam.data.mock.Mock
 import com.recepyesilkaya.arabam.databinding.FragmentAdvertInfoBinding
-import com.recepyesilkaya.arabam.ui.adapter.AdvertInfoAdapter
+import com.recepyesilkaya.arabam.ui.adapter.ViewPagerAdvertInfoAdapter
 
 
 class AdvertInfoFragment : Fragment() {
-
     private lateinit var binding: FragmentAdvertInfoBinding
 
     override fun onCreateView(
@@ -24,8 +23,7 @@ class AdvertInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val adapter = AdvertInfoAdapter(Mock.carAdverts)
+        val adapter = ViewPagerAdvertInfoAdapter(Mock.viewPagerAdvertInformations)
         binding.rvAdvertInfo.adapter = adapter
     }
 }
