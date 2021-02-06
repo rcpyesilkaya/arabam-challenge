@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="sort"
             type="com.recepyesilkaya.arabam.data.model.Sort" />

@@ -1,4 +1,4 @@
-package com.recepyesilkaya.arabam.ui.home
+package com.recepyesilkaya.arabam.ui.home.viewstate
 
 import com.recepyesilkaya.arabam.data.local.entity.SelectedCarEntity
 import com.recepyesilkaya.arabam.data.model.CarResponse

@@ -9,7 +9,7 @@ import com.recepyesilkaya.arabam.data.local.entity.SelectedCarEntity
 import com.recepyesilkaya.arabam.data.mock.Mock
 import com.recepyesilkaya.arabam.data.model.CarResponse
 import com.recepyesilkaya.arabam.databinding.ItemCarBinding
-import com.recepyesilkaya.arabam.ui.home.HomeItemViewState
+import com.recepyesilkaya.arabam.ui.home.viewstate.HomeItemViewState
 
 class CarViewHolder(val binding: ItemCarBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(

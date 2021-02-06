@@ -25,7 +25,6 @@ fun ImageView.downloadImageFromUrl(url: String?, progressDrawable: CircularProgr
         .into(this)
 }
 
-
 fun getPlaceHolder(context: Context): CircularProgressDrawable {
     return CircularProgressDrawable(context).apply {
         strokeWidth = 8f
@@ -64,7 +63,6 @@ fun CarResponse.toEntity(): CarEntity {
 fun List<Property>?.toConvert(): String {
     var result: String = ""
     this?.forEach { property ->
-
         if (property.name == "year") result += "${property.value}"
     }
     this?.forEach { property ->

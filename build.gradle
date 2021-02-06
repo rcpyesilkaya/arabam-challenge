@@ -13,6 +13,7 @@ buildscript {
         retrofit_version = '2.9.0'
         rx_java_version = '2.1.1'
         rx_java_version_new = '2.2.9'
+        rx_java_version_room = '1.1.1'
         lifecycle_ext_version = '2.1.1'
         paging_version = "2.1.2"
         glide_version = '4.9.0'

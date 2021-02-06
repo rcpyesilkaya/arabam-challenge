@@ -2,7 +2,6 @@ package com.recepyesilkaya.arabam.ui.home
 
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Color
@@ -12,24 +11,28 @@ import android.speech.RecognizerIntent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagedList
 import com.recepyesilkaya.arabam.R
 import com.recepyesilkaya.arabam.data.mock.Mock
+import com.recepyesilkaya.arabam.data.model.CarResponse
 import com.recepyesilkaya.arabam.data.model.Filter
 import com.recepyesilkaya.arabam.databinding.FragmentHomeBinding
-import com.recepyesilkaya.arabam.ui.adapter.AdvertSortAdapter
+import com.recepyesilkaya.arabam.databinding.LayoutAdvertFilterBinding
+import com.recepyesilkaya.arabam.databinding.LayoutSortBinding
 import com.recepyesilkaya.arabam.ui.adapter.CarListAdapter
+import com.recepyesilkaya.arabam.ui.home.viewstate.FilterViewState
+import com.recepyesilkaya.arabam.ui.home.viewstate.SortViewState
+import com.recepyesilkaya.arabam.util.REQ_CODE_SPEECH_INPUT
 import com.recepyesilkaya.arabam.util.State
 import com.recepyesilkaya.arabam.util.toArray
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.layout_advert_filter.*
 import kotlinx.android.synthetic.main.layout_sort.*
 import java.util.*
 
@@ -38,34 +41,42 @@ import java.util.*
 class HomeFragment : Fragment() {
 
     private lateinit var carListAdapter: CarListAdapter
-    private lateinit var advertSortAdapter: AdvertSortAdapter
-    private lateinit var binding: FragmentHomeBinding
+    private lateinit var mBuilder: AlertDialog
+    private lateinit var filterViewState: FilterViewState
+    private lateinit var intent: Intent
+    private lateinit var fragmentHomeBinding: FragmentHomeBinding
+    private lateinit var layoutSortBinding: LayoutSortBinding
+    private lateinit var layoutAdvertFilterBinding: LayoutAdvertFilterBinding
 
     private val homeViewModel: HomeViewModel by viewModels()
 
-    private lateinit var mBuilder: AlertDialog
-    private lateinit var mDialogView: View
+    private val interpolator = OvershootInterpolator()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
+        fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
+        return fragmentHomeBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewModel = homeViewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        fragmentHomeBinding.viewModel = homeViewModel
+        fragmentHomeBinding.lifecycleOwner = viewLifecycleOwner
 
-        homeViewModel.getSelectedCars()
+        arguments?.let {
+            homeViewModel.filterSuccessValue.value =
+                HomeFragmentArgs.fromBundle(it).filterSuccessValue
+        }
+        fragmentHomeBinding.fabSort.alpha = 0f
+        fragmentHomeBinding.fabFilter.alpha = 0f
+
         initAdapter()
-        bindOnClick()
         initState()
+        bindOnClick()
         bindObserve()
         bindAlertDialog()
-
     }
 
     private fun initAdapter() {
@@ -73,8 +84,19 @@ class HomeFragment : Fragment() {
             CarListAdapter(homeViewModel.isStyleChange.value!!) { homeViewModel.retry() }
         rvCar.adapter = carListAdapter
         homeViewModel.cars.observe(viewLifecycleOwner, Observer {
+            filterControl(it)
             carListAdapter.submitList(it)
         })
+    }
+
+    private fun filterControl(carResponse: PagedList<CarResponse>) {
+        val filterControl = carResponse.firstOrNull()
+        if (filterControl == null && !homeViewModel.errorValue.value!!) {
+            homeViewModel.filterErrorValue.value = true
+            homeViewModel.filterSuccessValue.value = true
+            fragmentHomeBinding.tvFilterError.text =
+                getString(R.string.fragment_home_filter_result_error_info)
+        } else homeViewModel.filterErrorValue.value = false
     }
 
     private fun initState() {
@@ -94,21 +116,21 @@ class HomeFragment : Fragment() {
             findNavController().navigate(action)
         }
 
-        binding.ivListStyle.setOnClickListener {
+        fragmentHomeBinding.ivListStyle.setOnClickListener {
             homeViewModel.isStyleChange.value = !homeViewModel.isStyleChange.value!!
             initAdapter()
             bindOnClick()
         }
 
-        binding.ivFilterClean.setOnClickListener {
+        fragmentHomeBinding.ivFilterClean.setOnClickListener {
             Mock.advertFilter = Filter(null, null, null, null, null)
             Mock.advertSort.sortType = null
             Mock.advertSort.sortDirections = null
-            homeViewModel.isFilter.value = false
-            val action = HomeFragmentDirections.actionHomeFragmentSelf()
+            homeViewModel.filterSuccessValue.value = false
+            val action =
+                HomeFragmentDirections.actionHomeFragmentSelf(homeViewModel.filterSuccessValue.value!!)
             findNavController().navigate(action)
         }
-
     }
 
     private fun bindObserve() {
@@ -123,7 +145,7 @@ class HomeFragment : Fragment() {
 
         homeViewModel.sort.observe(viewLifecycleOwner, Observer {
             it?.let {
-                val action = HomeFragmentDirections.actionHomeFragmentSelf()
+                val action = HomeFragmentDirections.actionHomeFragmentSelf(true)
                 findNavController().navigate(action)
                 mBuilder.dismiss()
                 return@Observer
@@ -136,153 +158,53 @@ class HomeFragment : Fragment() {
                 .show()
             mBuilder.dismiss()
         })
+
+        homeViewModel.isMenuOpen.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                fragmentHomeBinding.fabMain.animate().setInterpolator(interpolator).rotationBy(45f)
+                    .setDuration(300).start()
+                fragmentHomeBinding.fabFilter.animate().translationY(0f).alpha(1f)
+                    .setInterpolator(interpolator).setDuration(300).start()
+                fragmentHomeBinding.fabSort.animate().translationY(0f).alpha(1f)
+                    .setInterpolator(interpolator).setDuration(300).start()
+            } else {
+                fragmentHomeBinding.fabMain.animate().setInterpolator(interpolator).rotationBy(0f)
+                    .setDuration(300).start()
+                fragmentHomeBinding.fabFilter.animate().translationY(100f).alpha(0f)
+                    .setInterpolator(interpolator).setDuration(300).start()
+                fragmentHomeBinding.fabSort.animate().translationY(100f).alpha(0f)
+                    .setInterpolator(interpolator).setDuration(300).start()
+            }
+        })
     }
 
     private fun bindAlertDialog() {
-        binding.ivMic.setOnClickListener {
-            mDialogView =
-                LayoutInflater.from(context).inflate(R.layout.layout_sort, null)
-            mBuilder = AlertDialog.Builder(context).setView(mDialogView).show()
-            mBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-            mBuilder.ivMicrophoneDialog.setOnClickListener {
-                promptSpeechInput()
-            }
-
-            mBuilder.ivSortClose.setOnClickListener {
-                mBuilder.dismiss()
-            }
-
-            context?.let { context ->
-                advertSortAdapter = AdvertSortAdapter(Mock.getSortList(context)) {
-                    homeViewModel.sortResult(it, context, null)
-                }
-            }
-            mBuilder.rvSort.adapter = advertSortAdapter
+        fragmentHomeBinding.fabSort.setOnClickListener {
+            bindAlertSort()
         }
-        binding.ivFilter.setOnClickListener {
+        fragmentHomeBinding.fabFilter.setOnClickListener {
             bindAlertFilter()
         }
     }
 
-    private fun bindAlertFilter() {
-        mDialogView =
-            LayoutInflater.from(context).inflate(R.layout.layout_advert_filter, null)
-        mBuilder = AlertDialog.Builder(context).setView(mDialogView).show()
+    private fun bindAlertSort() {
+        layoutSortBinding = LayoutSortBinding.inflate(
+            LayoutInflater.from(context),
+            fragmentHomeBinding.root as ViewGroup,
+            false
+        )
+        mBuilder = AlertDialog.Builder(context).setView(layoutSortBinding.root).show()
         mBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        mBuilder.ivFilterClose.setOnClickListener {
-            mBuilder.dismiss()
-        }
-        mBuilder.btnOk.setOnClickListener {
-            if (homeViewModel.isFilter.value!!) {
-                val action = HomeFragmentDirections.actionHomeFragmentSelf()
-                findNavController().navigate(action)
-            }
+        layoutSortBinding.viewState = context?.let { SortViewState(it, mBuilder, homeViewModel) }
 
-            mBuilder.dismiss()
-        }
-
-        val adapter = context?.let { it1 ->
-            ArrayAdapter(
-                it1,
-                android.R.layout.simple_spinner_item,
-                Mock.getYearList()
-            )
-        }
-        adapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        mBuilder.spinnerMinYear.adapter = adapter
-        mBuilder.spinnerMaxYear.adapter = adapter
-        mBuilder.spinnerMinYear.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    if (p0?.getItemAtPosition(p2)
-                            .toString() != getString(R.string.spinner_select)
-                    ) {
-                        Mock.advertFilter.minYear = p0?.getItemAtPosition(p2).toString().toInt()
-                        homeViewModel.isFilter.value = true
-                    }
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {}
-            }
-        mBuilder.spinnerMaxYear.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    if (p0?.getItemAtPosition(p2)
-                            .toString() != getString(R.string.spinner_select)
-                    ) {
-                        Mock.advertFilter.maxYear = p0?.getItemAtPosition(p2).toString().toInt()
-                        homeViewModel.isFilter.value = true
-                    }
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {}
-            }
-
-        context?.let { Mock.getCategoryList(it) }
-
-        val adapterCategory = context?.let { it1 ->
-            ArrayAdapter(
-                it1,
-                android.R.layout.simple_spinner_item,
-                Mock.filterCategoryName!!
-            )
-        }
-        adapterCategory?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        mBuilder.spinnerCategory.adapter = adapterCategory
-        mBuilder.spinnerCategory.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    if (p0?.getItemAtPosition(p2)
-                            .toString() != getString(R.string.spinner_select)
-                    ) {
-                        Mock.advertFilter.category = Mock.filterCategoryId?.get(p2)
-                        homeViewModel.isFilter.value = true
-                    }
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {}
-            }
-
-        mBuilder.btnMinDate.setOnClickListener {
-            val dpd = context?.let { it1 ->
-                DatePickerDialog(
-                    it1,
-                    DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                        Mock.advertFilter.minDate = "$year-$dayOfMonth-$monthOfYear"
-                        mBuilder.btnMinDate.text = "$year-$dayOfMonth-$monthOfYear"
-                        homeViewModel.isFilter.value = true
-                    },
-                    homeViewModel.year,
-                    homeViewModel.month,
-                    homeViewModel.day
-                )
-            }
-            dpd?.show()
-        }
-
-        mBuilder.btnMaxDate.setOnClickListener {
-            val dpd2 = context?.let { it1 ->
-                DatePickerDialog(
-                    it1,
-                    DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                        Mock.advertFilter.maxDate = "$year-$dayOfMonth-$monthOfYear"
-                        mBuilder.btnMaxDate.text = "$year-$dayOfMonth-$monthOfYear"
-                        homeViewModel.isFilter.value = true
-                    },
-                    homeViewModel.year,
-                    homeViewModel.month,
-                    homeViewModel.day
-                )
-            }
-            dpd2?.show()
+        mBuilder.ivMicrophoneDialog.setOnClickListener {
+            promptSpeechInput()
         }
     }
 
     private fun promptSpeechInput() {
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         intent.putExtra(
             RecognizerIntent.EXTRA_LANGUAGE_MODEL,
             RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
@@ -293,7 +215,7 @@ class HomeFragment : Fragment() {
             getString(R.string.speach_to_text_title)
         )
         try {
-            startActivityForResult(intent, Companion.REQ_CODE_SPEECH_INPUT)
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT)
         } catch (a: ActivityNotFoundException) {
             Toast.makeText(
                 view?.context,
@@ -306,7 +228,7 @@ class HomeFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            Companion.REQ_CODE_SPEECH_INPUT -> {
+            REQ_CODE_SPEECH_INPUT -> {
                 if (resultCode === RESULT_OK && null != data) {
                     val result = data
                         .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
@@ -316,8 +238,21 @@ class HomeFragment : Fragment() {
         }
     }
 
-    companion object {
-        private const val REQ_CODE_SPEECH_INPUT = 1000
-    }
+    private fun bindAlertFilter() {
+        layoutAdvertFilterBinding = LayoutAdvertFilterBinding.inflate(
+            LayoutInflater.from(context),
+            fragmentHomeBinding.root as ViewGroup,
+            false
+        )
+        mBuilder = AlertDialog.Builder(context).setView(layoutAdvertFilterBinding.root).show()
+        mBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        filterViewState = FilterViewState(mBuilder, homeViewModel, context) {
+            homeViewModel.filterSuccessValue.value = true
+            val action =
+                HomeFragmentDirections.actionHomeFragmentSelf(homeViewModel.filterSuccessValue.value!!)
+            findNavController().navigate(action)
+        }
+        layoutAdvertFilterBinding.viewState = filterViewState
+    }
 }

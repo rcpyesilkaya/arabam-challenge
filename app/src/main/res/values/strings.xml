@@ -4,9 +4,11 @@
     <string name="error">Bağlantı Kurulamadı Tekrar Deneyin!!</string>
     <string name="image">Image</string>
     <string name="location">%1$s / %2$s</string>
+    <string name="date_format">%1$d - %2$d - %3$d</string>
     <string name="image_size">%1$dx%2$d</string>
     <string name="whatsapp_message"> %1$s \n\nModel =  %2$s \n\nFiyat =  %3$s </string>
     <string name="spinner_select">Seçiniz..</string>
+    <string name="result_ok">TAMAM</string>
 
     <!--Advert-->
     <string name="advert_no_title">İlan No</string>
@@ -29,7 +31,7 @@
     <string name="fragment_detail_call">Ara</string>
     <string name="fragment_detail_whatsapp">WhatsApp</string>
     <string name="fragment_home_sort_result_error_info">İfade Ettiğiniz Sıralama Mevcut Değil</string>
-
+    <string name="fragment_home_filter_result_error_info">Seçilen Filtreye Uygun Sonuç Bulunamadı..</string>
 
     <!--Sort-->
     <string name="speach_to_text_title">Sırala</string>
@@ -68,13 +70,14 @@
     <string name="layout_filter_year_title">Model Yılı</string>
     <string name="layout_filter_min_year">Minimum</string>
     <string name="layout_filter_max_year">Maksimum</string>
-    <string name="result_ok">TAMAM</string>
 
-
+    <!--Category-->
     <string name="category">otomobil"/"renault"-"clio"-"1"-"5"-"bluedci"-"touch</string>
     <string name="category1">otomobil"/"hyundai"-"elantra"-"1"-"6"-"mpi"-"elite</string>
     <string name="category2">otomobil"/"honda"-"civic"-"1"-"6"-"es</string>
     <string name="category3">otomobil"/"volkswagen"-"golf"-"1"-"6"-"primeline</string>
     <string name="category4">otomobil"/"honda"-"accord"-"2"-"4"-"executive</string>
-
+    <string name="content_description_sort">Sırala</string>
+    <string name="content_description_filter">Filtrele</string>
+    <string name="content_description_main">Ayrıntı</string>
 </resources>

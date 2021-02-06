@@ -1,114 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/ivMicrophoneDialog"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:rotation="4"
-        android:src="@drawable/microphone"
-        android:translationZ="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <TextView
-        android:id="@+id/tvMicrophoneTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:drawablePadding="16dp"
-        android:text="@string/speach_to_text_title"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_20sp"
-        android:textStyle="bold"
-        android:translationZ="5dp"
-        app:drawableStartCompat="@drawable/ic_sort"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivMicrophoneDialog" />
+        <variable
+            name="viewState"
+            type="com.recepyesilkaya.arabam.ui.home.viewstate.SortViewState" />
+    </data>
 
-    <TextView
-        android:id="@+id/tvMicrophoneInfo"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/bg_rounded_white_border"
-        android:text="@string/speach_to_text_info"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_12sp"
-        android:textStyle="bold"
-        android:translationZ="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvMicrophoneTitle" />
-
-    <ImageView
-        android:id="@+id/ivSortClose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_close"
-        android:translationZ="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <FrameLayout
-        android:id="@+id/containerSortTypeList"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rootview">
+        android:layout_height="wrap_content">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvSort"
+        <ImageView
+            android:id="@+id/ivMicrophoneDialog"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:rotation="4"
+            android:src="@drawable/microphone"
+            android:translationZ="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvMicrophoneTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="16dp"
+            android:text="@string/speach_to_text_title"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_20sp"
+            android:textStyle="bold"
+            android:translationZ="5dp"
+            app:drawableStartCompat="@drawable/ic_sort"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivMicrophoneDialog" />
+
+        <TextView
+            android:id="@+id/tvMicrophoneInfo"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_advert_sort" />
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_rounded_white_border"
+            android:text="@string/speach_to_text_info"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_12sp"
+            android:textStyle="bold"
+            android:translationZ="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMicrophoneTitle" />
 
-    </FrameLayout>
+        <ImageView
+            android:id="@+id/ivSortClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="8dp"
+            android:onClick="@{viewState.alertClose}"
+            android:src="@drawable/ic_close"
+            android:translationZ="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/rootview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/containerUserTop"
+        <FrameLayout
+            android:id="@+id/containerSortTypeList"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:layout_marginBottom="-3dp"
-            android:translationZ="0dp"
-            app:cardBackgroundColor="@color/red_500"
-            app:cardCornerRadius="12dp"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rootview">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSort"
+                bindAdapter="@{viewState.adapter}"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_advert_sort" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/rootview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <FrameLayout
+            <androidx.cardview.widget.CardView
+                android:id="@+id/containerUserTop"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="20dp" />
+                android:layout_height="140dp"
+                android:layout_marginBottom="-3dp"
+                android:translationZ="0dp"
+                app:cardBackgroundColor="@color/red_500"
+                app:cardCornerRadius="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        </androidx.cardview.widget.CardView>
-    </FrameLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="20dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

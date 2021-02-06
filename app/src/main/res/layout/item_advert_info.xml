@@ -3,17 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <import type="android.content.Context" />
-
         <variable
             name="carAdvertInfo"
             type="com.recepyesilkaya.arabam.data.model.ViewPagerAdvertInfo" />
-
         <variable
             name="viewItemState"
             type="com.recepyesilkaya.arabam.ui.detail.advertinfo.AdvertInfoViewState" />
-
         <variable
             name="isColor"
             type="Boolean" />

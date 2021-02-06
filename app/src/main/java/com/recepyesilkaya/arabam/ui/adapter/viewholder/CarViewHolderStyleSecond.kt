@@ -9,7 +9,7 @@ import com.recepyesilkaya.arabam.data.local.entity.SelectedCarEntity
 import com.recepyesilkaya.arabam.data.mock.Mock
 import com.recepyesilkaya.arabam.data.model.CarResponse
 import com.recepyesilkaya.arabam.databinding.ItemCarSecondStyleBinding
-import com.recepyesilkaya.arabam.ui.home.HomeItemViewState
+import com.recepyesilkaya.arabam.ui.home.viewstate.HomeItemViewState
 
 
 class CarViewHolderStyleSecond(val binding: ItemCarSecondStyleBinding) :

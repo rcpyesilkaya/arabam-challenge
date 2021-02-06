@@ -4,11 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="car"
-            type="com.recepyesilkaya.arabam.ui.home.HomeItemViewState" />
-
+            type="com.recepyesilkaya.arabam.ui.home.viewstate.HomeItemViewState" />
     </data>
 
     <androidx.cardview.widget.CardView

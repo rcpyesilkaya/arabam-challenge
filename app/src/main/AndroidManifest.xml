@@ -16,6 +16,8 @@
         android:theme="@style/Theme.Arabam">
         <activity
             android:name=".ui.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:theme="@style/LauncherFullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

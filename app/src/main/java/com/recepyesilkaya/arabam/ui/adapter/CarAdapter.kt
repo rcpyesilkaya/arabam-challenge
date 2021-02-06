@@ -8,11 +8,11 @@ import com.recepyesilkaya.arabam.data.model.CarResponse
 import com.recepyesilkaya.arabam.ui.adapter.viewholder.CarViewHolder
 import com.recepyesilkaya.arabam.ui.adapter.viewholder.CarViewHolderStyleSecond
 import com.recepyesilkaya.arabam.ui.adapter.viewholder.ListFooterViewHolder
+import com.recepyesilkaya.arabam.util.DATA_VIEW_TYPE
+import com.recepyesilkaya.arabam.util.DATA_VIEW_TYPE_CHANGES
+import com.recepyesilkaya.arabam.util.FOOTER_VIEW_TYPE
 import com.recepyesilkaya.arabam.util.State
 
-private const val DATA_VIEW_TYPE = 1
-private const val FOOTER_VIEW_TYPE = 2
-private const val DATA_VIEW_TYPE_CHANGES = 3
 
 class CarListAdapter(
     private val isStyleChange: Boolean,

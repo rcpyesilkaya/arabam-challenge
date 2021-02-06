@@ -1,6 +1,7 @@
 package com.recepyesilkaya.arabam.ui.home
 
 import android.content.Context
+import android.view.View
 import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -27,6 +28,10 @@ class HomeViewModel @Inject constructor(
 
     val errorValue = MutableLiveData<Boolean>()
     val loadingValue = MutableLiveData<Boolean>()
+    val filterErrorValue = MutableLiveData<Boolean>()
+    val filterSuccessValue = MutableLiveData<Boolean>()
+    val isStyleChange = MutableLiveData<Boolean>()
+
 
     var cars: LiveData<PagedList<CarResponse>>
     private val pageSize = 10
@@ -40,9 +45,9 @@ class HomeViewModel @Inject constructor(
     val sort: LiveData<Sort?>
         get() = _sort
 
-    val isStyleChange = MutableLiveData<Boolean>()
-
-    val isFilter = MutableLiveData<Boolean>(true)
+    private val _isMenuOpen = MutableLiveData<Boolean>()
+    val isMenuOpen: LiveData<Boolean>
+        get() = _isMenuOpen
 
     val c = Calendar.getInstance()
     val year = c.get(Calendar.YEAR)
@@ -57,6 +62,11 @@ class HomeViewModel @Inject constructor(
             .build()
         cars = LivePagedListBuilder(carDataSourceFactory, config).build()
         isStyleChange.value = false
+
+        viewModelScope.launch {
+            _selectedCars.postValue(carRepository.getAllSelectedCars())
+        }
+        _isMenuOpen.value = false
     }
 
     fun getState(): LiveData<State> =
@@ -76,12 +86,6 @@ class HomeViewModel @Inject constructor(
         errorValue.value = listIsEmpty() && state == State.ERROR
     }
 
-    fun getSelectedCars() {
-        viewModelScope.launch {
-            _selectedCars.postValue(carRepository.getAllSelectedCars())
-        }
-    }
-
     fun sortResult(sort: Sort?, context: Context, message: String?) {
         var result: Sort? = null
         message?.let { message ->
@@ -98,6 +102,10 @@ class HomeViewModel @Inject constructor(
         }
 
         _sort.value = result
+    }
+
+    fun onClickFab(view: View) {
+        _isMenuOpen.value = !_isMenuOpen.value!!
     }
 
     override fun onCleared() {
