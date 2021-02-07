@@ -12,6 +12,7 @@
             type="com.recepyesilkaya.arabam.ui.home.HomeViewModel" />
     </data>
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -125,6 +126,19 @@
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fabFavorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:contentDescription="@string/content_description_sort"
+                    android:src="@drawable/ic_select_favorite"
+                    android:tint="@color/white"
+                    android:translationY="100dp"
+                    app:backgroundTint="@color/red_700"
+                    app:fabSize="mini" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fabSort"

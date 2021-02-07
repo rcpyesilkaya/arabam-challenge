@@ -8,7 +8,7 @@ import com.recepyesilkaya.arabam.ui.detail.advertdescription.DescriptionFragment
 import com.recepyesilkaya.arabam.ui.detail.advertinfo.AdvertInfoFragment
 
 object Mock {
-    var selectedCars: ArrayList<SelectedCarEntity>? = null
+    var selectedCars: ArrayList<SelectedCarEntity>? = arrayListOf(SelectedCarEntity(0))
     var selectedCarForBackId = 0
     var viewPagerAdvertInformations = ArrayList<ViewPagerAdvertInfo>()
     var viewPagerAdvertDescription = ""

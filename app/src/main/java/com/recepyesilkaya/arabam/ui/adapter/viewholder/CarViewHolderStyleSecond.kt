@@ -22,7 +22,6 @@ class CarViewHolderStyleSecond(val binding: ItemCarSecondStyleBinding) :
             Mock.selectedCars?.add(SelectedCarEntity(Mock.selectedCarForBackId))
             binding.car = HomeItemViewState(carItem, Mock.selectedCars)
             binding.root.setOnClickListener {
-                binding.car = HomeItemViewState(carItem, Mock.selectedCars)
                 carItem.id.let { it1 -> carItemClick.invoke(it1) }
             }
         }

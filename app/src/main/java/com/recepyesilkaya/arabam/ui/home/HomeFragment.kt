@@ -30,7 +30,6 @@ import com.recepyesilkaya.arabam.ui.home.viewstate.FilterViewState
 import com.recepyesilkaya.arabam.ui.home.viewstate.SortViewState
 import com.recepyesilkaya.arabam.util.REQ_CODE_SPEECH_INPUT
 import com.recepyesilkaya.arabam.util.State
-import com.recepyesilkaya.arabam.util.toArray
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_sort.*
@@ -71,6 +70,7 @@ class HomeFragment : Fragment() {
         }
         fragmentHomeBinding.fabSort.alpha = 0f
         fragmentHomeBinding.fabFilter.alpha = 0f
+        fragmentHomeBinding.fabFavorite.alpha = 0f
 
         initAdapter()
         initState()
@@ -135,7 +135,10 @@ class HomeFragment : Fragment() {
 
     private fun bindObserve() {
         homeViewModel.selectedCars.observe(viewLifecycleOwner, Observer {
-            Mock.selectedCars = it.toArray()
+
+            it.forEach {
+                Mock.selectedCars?.add(it)
+            }
             if (homeViewModel.firstTime) {
                 initAdapter()
                 bindOnClick()
@@ -167,12 +170,16 @@ class HomeFragment : Fragment() {
                     .setInterpolator(interpolator).setDuration(300).start()
                 fragmentHomeBinding.fabSort.animate().translationY(0f).alpha(1f)
                     .setInterpolator(interpolator).setDuration(300).start()
+                fragmentHomeBinding.fabFavorite.animate().translationY(0f).alpha(1f)
+                    .setInterpolator(interpolator).setDuration(300).start()
             } else {
                 fragmentHomeBinding.fabMain.animate().setInterpolator(interpolator).rotationBy(0f)
                     .setDuration(300).start()
                 fragmentHomeBinding.fabFilter.animate().translationY(100f).alpha(0f)
                     .setInterpolator(interpolator).setDuration(300).start()
                 fragmentHomeBinding.fabSort.animate().translationY(100f).alpha(0f)
+                    .setInterpolator(interpolator).setDuration(300).start()
+                fragmentHomeBinding.fabFavorite.animate().translationY(100f).alpha(0f)
                     .setInterpolator(interpolator).setDuration(300).start()
             }
         })
@@ -184,6 +191,11 @@ class HomeFragment : Fragment() {
         }
         fragmentHomeBinding.fabFilter.setOnClickListener {
             bindAlertFilter()
+        }
+        fragmentHomeBinding.fabFavorite.setOnClickListener {
+            val action =
+                HomeFragmentDirections.actionHomeFragmentToFavoriteFragment()
+            findNavController().navigate(action)
         }
     }
 
@@ -255,4 +267,5 @@ class HomeFragment : Fragment() {
         }
         layoutAdvertFilterBinding.viewState = filterViewState
     }
+
 }

@@ -20,6 +20,9 @@
             android:name="filterSuccessValue"
             android:defaultValue="false"
             app:argType="boolean" />
+        <action
+            android:id="@+id/action_homeFragment_to_favoriteFragment"
+            app:destination="@id/favoriteFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -29,5 +32,13 @@
         <argument
             android:name="id"
             app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.recepyesilkaya.arabam.ui.favorite.FavoriteFragment"
+        android:label="FavoriteFragment">
+        <action
+            android:id="@+id/action_favoriteFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
 </navigation>

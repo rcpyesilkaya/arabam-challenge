@@ -32,7 +32,7 @@ class CarListAdapter(
         return when (viewType) {
             DATA_VIEW_TYPE -> CarViewHolder.create(parent)
             DATA_VIEW_TYPE_CHANGES -> CarViewHolderStyleSecond.create(parent)
-            else -> ListFooterViewHolder.create(retry, parent)
+            else -> ListFooterViewHolder.create(parent)
         }
     }
 
@@ -44,7 +44,7 @@ class CarListAdapter(
             getItemViewType(position) == DATA_VIEW_TYPE_CHANGES -> {
                 (holder as CarViewHolderStyleSecond).bind(getItem(position), carItemClick)
             }
-            else -> (holder as ListFooterViewHolder).bind(state)
+            else -> (holder as ListFooterViewHolder).bind(state, retry)
         }
     }
 

@@ -11,20 +11,20 @@ import com.recepyesilkaya.arabam.util.State
 class ListFooterViewHolder(val binding: ItemListFooterBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(state: State?) {
+    fun bind(state: State?, retry: () -> Unit) {
         binding.stateProgress = state == State.LOADING
         binding.stateError = state == State.ERROR
+        binding.tvError.setOnClickListener { retry() }
     }
 
     companion object {
-        fun create(retry: () -> Unit, parent: ViewGroup): ListFooterViewHolder {
+        fun create(parent: ViewGroup): ListFooterViewHolder {
             val binding: ItemListFooterBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
                 R.layout.item_list_footer,
                 parent,
                 false
             )
-            binding.tvError.setOnClickListener { retry() }
             return ListFooterViewHolder(binding)
         }
     }

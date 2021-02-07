@@ -6,16 +6,19 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.recepyesilkaya.arabam.data.local.entity.SelectedCarEntity
 import com.recepyesilkaya.arabam.data.model.CarDetail
 import com.recepyesilkaya.arabam.data.model.User
 import com.recepyesilkaya.arabam.data.repository.CarRepository
 import com.recepyesilkaya.arabam.util.Resource
 import com.recepyesilkaya.arabam.util.State
+import com.recepyesilkaya.arabam.util.toFavorite
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import org.imaginativeworld.whynotimagecarousel.CarouselItem
 import javax.inject.Inject
 
@@ -26,10 +29,11 @@ class DetailViewModel @Inject constructor(private val carRepository: CarReposito
     private var imageList = ArrayList<CarouselItem>()
     private val compositeDisposable = CompositeDisposable()
 
-    var carDetail = MutableLiveData<CarDetail>()
-    var userInfo = MutableLiveData<User>()
-    var carShareInfo = MutableLiveData<String>()
-    var carDetailResource = MutableLiveData<Resource<CarDetail>>()
+    val carDetail = MutableLiveData<CarDetail>()
+    val userInfo = MutableLiveData<User>()
+    val carShareInfo = MutableLiveData<String>()
+    val carDetailResource = MutableLiveData<Resource<CarDetail>>()
+    val isFavorite = MutableLiveData<Boolean>()
     var selectionCarId: Long? = null
 
     lateinit var onBackClick: () -> Unit
@@ -39,6 +43,10 @@ class DetailViewModel @Inject constructor(private val carRepository: CarReposito
     private val _images = MutableLiveData<ArrayList<CarouselItem>>()
     val images: LiveData<ArrayList<CarouselItem>>
         get() = _images
+
+    init {
+        getFavorites()
+    }
 
     fun getCarDetail(id: Long) {
         carDetailResource.postValue(Resource(state = State.LOADING, data = null, message = ""))
@@ -71,6 +79,30 @@ class DetailViewModel @Inject constructor(private val carRepository: CarReposito
                     }
                 )
         )
+    }
+
+    private fun getFavorites() {
+        viewModelScope.launch {
+            val favorite = carRepository.getAllFavorite().find { it.car_id == selectionCarId }
+            isFavorite.value = favorite != null
+        }
+    }
+
+    fun onClickFavorite(view: View) {
+        if (isFavorite.value!!) {
+            viewModelScope.launch {
+                carRepository.deleteFavorite(selectionCarId!!)
+                isFavorite.value = false
+            }
+        } else {
+            viewModelScope.launch {
+                val favorite = carDetailResource.value?.data?.toFavorite()
+                favorite?.let {
+                    carRepository.insertFavorite(it)
+                    isFavorite.value = true
+                }
+            }
+        }
     }
 
     fun addSelectedCar(id: Int) {
@@ -108,6 +140,13 @@ class DetailViewModel @Inject constructor(private val carRepository: CarReposito
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
         intent.setPackage("com.whatsapp")
+        intent.putExtra(Intent.EXTRA_TEXT, carShareInfo.value)
+        startIntentShareCar.invoke(intent)
+    }
+
+    fun onClickShare(view: View) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
         intent.putExtra(Intent.EXTRA_TEXT, carShareInfo.value)
         startIntentShareCar.invoke(intent)
     }

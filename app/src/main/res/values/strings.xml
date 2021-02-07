@@ -27,6 +27,7 @@
     <string name="advert_property_km_name">km</string>
     <string name="advert_property_color_name">color</string>
     <string name="fragment_advert_detail_title">İlan Detayı</string>
+    <string name="fragment_favorite">Favoriler</string>
 
     <string name="fragment_detail_call">Ara</string>
     <string name="fragment_detail_whatsapp">WhatsApp</string>
@@ -80,4 +81,5 @@
     <string name="content_description_sort">Sırala</string>
     <string name="content_description_filter">Filtrele</string>
     <string name="content_description_main">Ayrıntı</string>
+    <string name="fragment_favorite_empty_list">Seçili Favori İlanınız Bulunamadı..</string>
 </resources>

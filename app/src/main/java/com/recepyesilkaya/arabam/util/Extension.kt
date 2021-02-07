@@ -10,9 +10,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.recepyesilkaya.arabam.R
 import com.recepyesilkaya.arabam.data.local.entity.CarEntity
-import com.recepyesilkaya.arabam.data.local.entity.SelectedCarEntity
-import com.recepyesilkaya.arabam.data.model.CarResponse
-import com.recepyesilkaya.arabam.data.model.Property
+import com.recepyesilkaya.arabam.data.local.entity.FavoriteEntity
+import com.recepyesilkaya.arabam.data.model.*
 
 fun ImageView.downloadImageFromUrl(url: String?, progressDrawable: CircularProgressDrawable) {
     val options = RequestOptions()
@@ -74,12 +73,37 @@ fun List<Property>?.toConvert(): String {
     return result
 }
 
-fun List<SelectedCarEntity>.toArray(): ArrayList<SelectedCarEntity> {
-    val temps = ArrayList<SelectedCarEntity>()
-    this.forEach {
-        temps.add(it)
-    }
-    return temps
+fun FavoriteEntity.toCarResponse(): CarResponse {
+    return CarResponse(
+        this.car_id,
+        this.title,
+        CarLocation(this.cityName, this.townName),
+        Category(this.categoryId, this.categoryName),
+        this.modelName,
+        this.price,
+        this.priceFormatted,
+        this.date,
+        this.dateFormatted,
+        this.photo,
+        null
+    )
+}
+
+fun CarDetail.toFavorite(): FavoriteEntity {
+    return FavoriteEntity(
+        this.id!!.toLong(),
+        this.title,
+        this.location?.cityName,
+        this.location?.townName,
+        this.category?.id,
+        this.category?.name,
+        this.modelName,
+        this.price,
+        this.priceFormatted,
+        this.date,
+        this.dateFormatted,
+        this.photos?.firstOrNull()
+    )
 }
 
 
