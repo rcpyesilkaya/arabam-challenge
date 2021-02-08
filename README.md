@@ -18,6 +18,7 @@ You can follow car adverts and do various filters. You can add your favorite car
 * [RxJava](https://github.com/ReactiveX/RxJava)
 * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
 * [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
+* [DataBinding](https://developer.android.com/topic/libraries/data-binding)
 * [Retrofit](https://square.github.io/retrofit/)
 * [Navigation](https://developer.android.com/guide/navigation)
 * [Lifecycle](https://developer.android.com/topic/libraries/architecture/lifecycle)
